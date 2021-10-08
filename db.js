@@ -1,8 +1,12 @@
 const mongoose = require('mongoose');
+const dotenv = require('dotenv')
+dotenv.config()
 
-const db = 'mongodb+srv://hui-zhen:huizhen312@cluster0.rfozx.mongodb.net/RecipeDB?retryWrites=true&w=majority';
+const db = process.env.MONGO_URL;
 
-mongoose.connect(db)
+mongoose.connect(db, {
+    useNewUrlParser: true
+})
 .then(()=>{
     console.log("Connect successfully")
 })
