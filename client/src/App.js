@@ -1,11 +1,8 @@
-import './App.css';
+//import '/assets/App.css';
 import React, {useState , useEffect} from 'react';
-import { Router} from "react-router-dom";
 import axios from 'axios';
-
 import {
   Form,
-  Label,
   InputGroup,
   Input,
   FormGroup,
@@ -13,55 +10,68 @@ import {
   Container
 } from 'reactstrap';
 
+import Home from './views/Home';
+import HomeNavbar from './components/HomeNavbar';
+
 function App() {
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [foodList, setFoodList] = useState([]);
 
-  // const handleSearch = (e) => {
-  //   e.preventDefault()
-  // }
-
   useEffect(()=>{
-    axios.get('http://localhost:5000/')
+    fetchFoodList()
+  },[search])
+
+  const fetchFoodList = async() =>{
+    await axios.get('http://localhost:5000/')
     .then(res => setFoodList(res.data))
     .catch(error => console.log(error));
-  },[])
+  }
+
+  const updateSearch = e => {
+    setSearch(e.target.value); 
+  };
+
+  const handleSearch = async(e) => {
+    e.preventDefault()
+
+    const searchQuery = {search}
+    await axios.post("/search",searchQuery)
+      .then((res) => {
+          console.log(res.data)
+          //window.location.reload(false);
+      })
+      .catch(err=>{console.log(err)})
+    
+    setSearch('');
+  }
 
   return (
+    <>
+    <HomeNavbar/>
     <div className="App">
-      <Container>
-        <Form action="/quotes" method="POST">
-          <Label>Book Title</Label>
-          <InputGroup className="form-group-no-border" >
-              <Input className="write-form" name="search" value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="Looking for some foods or menu...."  type="text" required/>
-          </InputGroup>
-          <FormGroup>
-            <Button
-              className="mr-1"
-              color="success"
-              type="submit"
-            >
-                Search
-            </Button>
-          </FormGroup>
-        </Form>
-        <div>
-          <h3>Welcome to the Food Heaven...</h3>
-          {foodList.map((food, key)=>{
-            return(
-              <>
-                <div className="image-container">
-                  <p>Food Title: {food.foodTitle}</p>
-                  <p>Food Aisle: {food.foodAisle}</p>
-                  <img src={food.recipeImage} alt="Food Image"/>
-                </div>
-              </>
-            )
-          })}
-        </div>
-      </Container>
+      <div className="search-container">
+        <h3 className="text-center title">Welcome to the Food Heaven...</h3>
+        <Container className="container-md">
+          <Form className="search-form" onSubmit={handleSearch} method="POST" encType="multipart/form-data">
+            <InputGroup className="form-group-no-border" >
+                <Input className="write-form" name="search" value={search} onChange={updateSearch} placeholder="Looking for some foods or menu...."  type="text" required/>
+            </InputGroup>
+            <FormGroup>
+              <Button
+                className="mr-1"
+                color="success"
+                type="submit"
+              >
+                  Search
+              </Button>
+            </FormGroup>
+          </Form>
+        </Container>
+      </div>        
+      <Home foodList={foodList}/>
     </div>
+    </>
   );
 }
 

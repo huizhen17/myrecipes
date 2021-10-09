@@ -17,11 +17,11 @@ mongoose.connect(db, {
 const mySchema = new mongoose.Schema({
     foodTitle: {type: String},
     foodAisle: {type: String},
-    foodImage: {type: String},
+    foodUnit: {type: Array},
     recipeName: {type: String},
     recipeImage: {type: String},
     recipeCalories: {type: String}
-});
+},{timestamps: true});
 
 const Food = mongoose.model('recipes', mySchema);
 
