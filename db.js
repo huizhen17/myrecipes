@@ -20,7 +20,7 @@ const mySchema = new mongoose.Schema({
     foodUnit: {type: Array},
     recipeName: {type: String},
     recipeImage: {type: String},
-    recipeCalories: {type: String}
+    recipeIngredient: {type: Array}
 },{timestamps: true});
 
 const Food = mongoose.model('recipes', mySchema);

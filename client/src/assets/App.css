@@ -74,8 +74,8 @@ h6, .h6{
 }
 
 p{
-  font-size: 18px;
-  line-height: 0.8rem;
+  font-size: 15px;
+  line-height: 1.6rem;
   margin-bottom: 5px;
 }
 
@@ -107,8 +107,34 @@ Input {
   padding-right: 20px!important;
 }
 
-section {
-  height: 100vh;
+.display-block{
+  display: block;
+}
+
+.display-none{
+  display: none;
+}
+
+.section {
+  /* height: 100vh; */
+  margin: 60px 0;
+}
+
+a{
+  color: #000!important;
+  text-decoration: none!important;
+}
+
+a:hover{
+  color: #686868 !important
+}
+
+::-moz-selection { /* Code for Firefox */
+  background: #a7da93;
+}
+
+::selection {
+  background: #a7da93;
 }
 
 /* NAVIGATION */
@@ -116,7 +142,7 @@ section {
   /* display: block!important;
   width: 100%; */
   margin: 0 auto;
-  background-color: #fff!important;
+  background-color: white!important;
   padding: 30px 0!important;
   box-shadow: 0px 1px 0px #dedede;
 }
@@ -129,13 +155,27 @@ section {
   color: #10bd00!important;
 }
 
+.errorMessage {
+  background-color: #ffdede;
+  padding: 10px 15px;
+  border: 1px solid #ffadad;
+}
+
+.navbar-transparent {
+  background: transparent !important;
+  padding-top: 30px 0!important;
+  box-shadow: none;
+}
+
 .nav ul {
   list-style: none;
   text-align: center;
 }
+
 .nav ul li {
   display: inline-block;
 }
+
 .nav ul li a {
   display: block;
   padding: 15px;
@@ -184,6 +224,10 @@ section {
   }
 }
 
+.container-top{
+  margin-top: 50px;
+}
+
 
 /*    Home Page   */
 .image-container{
@@ -200,21 +244,36 @@ section {
   margin: 30px 0;
 }
 
+
 .search-form{
-  margin: 30px 0 50px;
+  margin: 30px 0 15px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.search-container{
-  margin-top: 150px;
+.search-container {
+  background-color: #ffffff;
+  padding-top: 200px;
+  padding-bottom: 250px;
+  box-shadow: 0px 1px 0px #dedede;
+}
+
+.search-input{
+  padding: 12px!important;
 }
 
 .search-btn{
-  margin: 15px 0 30px;
+  padding: 12px!important;
+  /* margin: 15px 0 30px; */
 }
 
 .foodunit-btn{
-  margin: 10px 8px 10px 0;
+  margin: 5px 8px 5px 0;
+  border-radius: 10px!important;
+}
+
+.error-icon{
+  font-size: 15px;
+  padding: 0 10px 0 0;
 }

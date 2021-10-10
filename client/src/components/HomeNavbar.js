@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+// nodejs library that concatenates strings
+import classnames from "classnames";
 import {
   Collapse,
   Navbar,
@@ -16,13 +18,30 @@ import {
 } from 'reactstrap';
 
 const HomeNavbar = (props) => {
-  const [isOpen, setIsOpen] = useState(false);
+    const [navbarColor, setNavbarColor] = useState("navbar-transparent");
+    const [isOpen, setIsOpen] = useState(false);
 
-  const toggle = () => setIsOpen(!isOpen);
+    const toggle = () => setIsOpen(!isOpen);
+    
+    useEffect(() => {
+        const updateNavbarColor = () => {
+            if (document.documentElement.scrollTop > 99 || document.body.scrollTop > 99) {
+                setNavbarColor("");
+            } else if (document.documentElement.scrollTop < 100 || document.body.scrollTop < 100) {
+                setNavbarColor("navbar-transparent");
+            }
+        };
 
-  return (
+        window.addEventListener("scroll", updateNavbarColor);
+
+        return function cleanup() {
+            window.removeEventListener("scroll", updateNavbarColor);
+        };
+    });
+
+    return (
     <div>
-      <Navbar className="nav-bar fixed-top" expand="md">
+      <Navbar className={classnames("nav-bar fixed-top", navbarColor)}  expand="md">
         <Container>
             <NavbarBrand className="link" href="/">
                 FOOD<b className="finder">FINDER</b>

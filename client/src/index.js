@@ -11,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 
 import reportWebVitals from './reportWebVitals';
+import SingleRecipe from './views/SingleRecipe';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -18,6 +19,14 @@ ReactDOM.render(
       <Route 
         path="/" exact
         render={(props) => <App {...props}/>}
+      />
+      <Route 
+        path="/:id" exact
+        render={(props) => <SingleRecipe {...props}/>}
+      />
+      <Route 
+        path="/update/:id" exact
+        render={(props) => <SingleRecipe {...props}/>}
       />
     </Switch>
   </BrowserRouter>,
