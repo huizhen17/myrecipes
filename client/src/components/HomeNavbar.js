@@ -63,7 +63,7 @@ const HomeNavbar = (props) => {
                         </DropdownMenu>
                     </UncontrolledDropdown>
                     <NavItem>
-                        <NavLink className="link padding-right" href="/components/">Login</NavLink>
+                        <NavLink className="link padding-right" href="/login">Login</NavLink>
                     </NavItem>
                     <NavItem>
                         <Button color="success">Sign Up</Button>

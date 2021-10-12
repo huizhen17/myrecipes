@@ -1,15 +1,93 @@
-import React from 'react'
-import { Container } from 'reactstrap';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import HomeNavbar from '../components/HomeNavbar';
 
+import {
+    Container,
+    Row,
+    Col,
+    Table,
+    Button
+  } from 'reactstrap';
+
 function SingleRecipe(props) {
-    console.log(props.match.params.id);
+
+    const [recTitle, setRecTitle] = useState("");
+    const [recImg, setRecImg] = useState("");
+    const [recIng, setRecIng] = useState([]);
+    const [recMeal, setRecMeal] = useState("");
+    const [recDish, setRecDish] = useState("");
+
+    useEffect(()=>{
+        fetchRecipes();
+    },[])
+
+    const fetchRecipes = async() => {
+        await axios.get(`/recipe/${props.match.params.id}`)
+        .then((res) => {
+            setRecTitle(res.data.recipeName);
+            setRecImg(res.data.recipeImage);
+            setRecIng(res.data.recipeIngredient);
+            setRecMeal(res.data.recipeMealType);
+            setRecDish(res.data.recipeDishType);
+        })
+        .catch((err)=>{
+            //setError(err.response.data);
+        })
+    }
+
     return (
         <>
         <HomeNavbar/>
-        <div className="section">
+        <div className="main-section">
             <Container>
-                <h2>My Recipe</h2>
+                <Row>
+                    <Col>
+                        <img className="single-recipe-image" style={{position:"fixed"}} src={recImg} alt="Food"/>
+                    </Col>
+                    <Col>
+                        <div>
+                            <h3 className="title">{recTitle}</h3>
+                        </div>
+                        <div>
+                            <Row>
+                                <Col>   
+                                    <div className="text-center recipe-type">
+                                        <h5 className="small-title">Meal Type</h5>
+                                        <img className="recipe-icon" draggable="false" src={require("../assets/img/breakfast.png").default} alt="meal-icon" />
+                                        <p className="meal-type-text">{recMeal}</p>
+                                    </div>
+                                </Col>
+                                <Col>
+                                    <div className="text-center recipe-type">
+                                        <h5 className="small-title">Dish Type</h5>
+                                        <img className="recipe-icon" draggable="false" src={require("../assets/img/serving.png").default} alt="serve-icon" />
+                                        <p className="dish-type-text">{recDish}</p>
+                                    </div>
+                                </Col>
+                            </Row>
+                        </div>
+                        <div>
+                            <h5 className="title">Ingredients</h5>
+                            <Table bordered>
+                                <tbody>
+                                    {recIng.map((ingredient,key)=>{
+                                        return (
+                                            <tr>
+                                                <th scope="row">{key+1}</th>
+                                                <td>{ingredient}</td>
+                                            </tr>
+                                        )
+                                    })}  
+                                    
+                                </tbody>
+                            </Table>
+                        </div>
+                        <Button block className="btn-round small-title" color="success">
+                            Update
+                        </Button>
+                    </Col>
+                </Row>
             </Container>
         </div>
         </>

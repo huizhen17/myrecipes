@@ -12,6 +12,7 @@ import App from './App';
 
 import reportWebVitals from './reportWebVitals';
 import SingleRecipe from './views/SingleRecipe';
+import Login from './views/Login';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -21,12 +22,16 @@ ReactDOM.render(
         render={(props) => <App {...props}/>}
       />
       <Route 
-        path="/:id" exact
+        path="/recipe/:id" exact
         render={(props) => <SingleRecipe {...props}/>}
       />
       <Route 
         path="/update/:id" exact
         render={(props) => <SingleRecipe {...props}/>}
+      />
+      <Route 
+        path="/login" exact
+        render={(props) => <Login {...props}/>}
       />
     </Switch>
   </BrowserRouter>,

@@ -43,6 +43,7 @@ function App() {
     e.preventDefault()
 
     const searchQuery = {search}
+
     await axios.post("/search",searchQuery)
     .then((res) => {
         console.log(res.data)
@@ -51,7 +52,6 @@ function App() {
     .catch((err)=>{
       setError(err.response.data);
     })
-
     
     setSearch('');
   }
@@ -65,7 +65,7 @@ function App() {
           backgroundImage:
             "url(" + require("./assets/img/main-header.png").default + ")", opacity: 1, 
         }}>
-        <h3 className="header-text text-center title">Welcome to the Food Heaven...</h3>
+        <h2 className="header-text text-center title">Welcome to the Food Heaven...</h2>
         <Container className="container-md">
           <Form className="search-form" onSubmit={handleSearch} method="POST" encType="multipart/form-data">
             <InputGroup className="form-group-no-border" >
