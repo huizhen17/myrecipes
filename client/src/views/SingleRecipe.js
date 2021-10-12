@@ -43,7 +43,7 @@ function SingleRecipe(props) {
             <Container>
                 <Row>
                     <Col>
-                        <img className="single-recipe-image" style={{position:"fixed"}} src={recImg} alt="Food"/>
+                        <img className="single-recipe-image"  src={recImg} alt="Food"/>
                     </Col>
                     <Col>
                         <div>
@@ -90,6 +90,16 @@ function SingleRecipe(props) {
                 </Row>
             </Container>
         </div>
+        
+    <footer className="footer footer-black footer-white">
+        <Container>
+            <div className="credits ml-auto text-center">
+                <span className="copyright">
+                    © {new Date().getFullYear()} powered by{" "}Spoonacular and Edaman
+                </span>
+            </div>
+        </Container>
+    </footer>
         </>
     )
 }

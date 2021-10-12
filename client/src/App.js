@@ -88,6 +88,15 @@ function App() {
       </div>        
       <Recipe foodList={foodList}/>
     </div>
+    <footer className="footer footer-black footer-white">
+        <Container>
+            <div className="credits ml-auto text-center">
+                <span className="copyright">
+                    © {new Date().getFullYear()} powered by{" "}Spoonacular and Edaman
+                </span>
+            </div>
+        </Container>
+    </footer>
     </>
   );
 }

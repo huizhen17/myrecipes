@@ -150,6 +150,11 @@ a:hover{
   background: #a7da93;
 }
 
+.footer{
+  padding: 20px 0;
+  background-color: #66d55c;
+}
+
 /* NAVIGATION */
 .nav-bar {
   /* display: block!important;
