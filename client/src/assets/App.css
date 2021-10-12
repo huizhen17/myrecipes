@@ -352,6 +352,10 @@ a:hover{
   float: right;
 }
 
+.search-row-container{
+  margin: 20px 0 80px 0!important;
+}
+
 .listinline-item{
   /* text-decoration: underline;
   text-decoration-thickness: 1px; */

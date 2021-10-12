@@ -41,7 +41,7 @@ function Recipe({foodList}) {
     <div className="section">
       <Container className="container-top">
         <div>
-          <Row> 
+          <Row > 
             {foodList.length === 0 ?
               <>
               <div className="swipe-up-container">
@@ -52,7 +52,7 @@ function Recipe({foodList}) {
               foodList.map((food, key)=>{
                 return(
                 <>
-                    <Col lg="4">
+                    <Col className="search-row-container" lg="4">
                       <Card key={key}>
                         <CardImg top width="100%" src={food.recipeImage} alt="Card image cap" />
                         <CardBody>

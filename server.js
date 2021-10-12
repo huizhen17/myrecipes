@@ -102,6 +102,7 @@ app.put("/update/:id", (req, res)=>{
     .catch(err => res.status(400).json(`Error: ${err}`))
 })
 
+//Delete Recipe By ID
 app.delete('/recipe/:id', (req, res)=>{
     Food.findByIdAndDelete(req.params.id)
     .then(() => res.json("The menu is deleted"))
