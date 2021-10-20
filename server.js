@@ -1,8 +1,11 @@
-const express = require("express")
-const axios = require('axios')
+const express = require("express");
+const axios = require('axios');
 const cors = require('cors');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
-const Food = require('./models/recipe.js')
+const Food = require('./models/recipe.js');
+const User = require('./models/user.js');
 
 const app = express()
 const port = process.env.PORT || 5000
@@ -25,6 +28,59 @@ app.get('/',(req,res)=>{
     Food.find().sort({createdAt: -1})
     .then(food => res.json(food))
     .catch(err => res.status(400).json(`Error: ${err}`));
+
+});
+
+app.post('/register',async (req,res)=>{
+
+    //Checking if user email is already in the database
+    const emailExist = await User.findOne({email: req.body.email});
+    if(emailExist){
+        return res.status(400).send('Email already exists');
+    }
+
+    //Password Hashing
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(req.body.password, salt);
+    const hashRePassword = await bcrypt.hash(req.body.repassword, salt);
+
+    //Create a new user
+    const user = new User({
+        name: req.body.name,
+        email: req.body.email,
+        password: hashPassword,
+        repassword: hashRePassword
+    });
+    try{
+        const savedUser = await user.save();
+        res.send({user: user._id});
+    }catch(err){
+        res.status(400).json(`Error: ${err}`);
+    }
+});
+
+app.post('/login', async(req, res)=>{
+
+    const user = await User.findOne({email: req.body.email});
+
+    //Check if the email exists
+    if(!user){
+        return res.status(400).send('Email does not exists.');
+    }
+
+    //Check if password is valid
+    const validPass = await bcrypt.compare(req.body.password, user.password);
+    if(!validPass){
+        return res.status(400).send('Invalid Password.');
+    }
+
+    //Create and assign a token when login
+    const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
+    res.header('auth-token',token).send(token);
+
+
+    //res.send("Success");
+
 
 });
 

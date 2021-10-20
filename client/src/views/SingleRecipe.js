@@ -18,23 +18,20 @@ function SingleRecipe(props) {
     const [recMeal, setRecMeal] = useState("");
     const [recDish, setRecDish] = useState("");
 
-    useEffect(()=>{
-        fetchRecipes();
+    useEffect(async()=>{
+        await axios.get(`/recipe/${props.match.params.id}`)
+            .then((res) => {
+                setRecTitle(res.data.recipeName);
+                setRecImg(res.data.recipeImage);
+                setRecIng(res.data.recipeIngredient);
+                setRecMeal(res.data.recipeMealType);
+                setRecDish(res.data.recipeDishType);
+            })
+            .catch((err)=>{
+                //setError(err.response.data);
+            })
     },[])
 
-    const fetchRecipes = async() => {
-        await axios.get(`/recipe/${props.match.params.id}`)
-        .then((res) => {
-            setRecTitle(res.data.recipeName);
-            setRecImg(res.data.recipeImage);
-            setRecIng(res.data.recipeIngredient);
-            setRecMeal(res.data.recipeMealType);
-            setRecDish(res.data.recipeDishType);
-        })
-        .catch((err)=>{
-            //setError(err.response.data);
-        })
-    }
 
     return (
         <>

@@ -16,6 +16,7 @@ import {
   Button,
   Container
 } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 const HomeNavbar = (props) => {
     const [navbarColor, setNavbarColor] = useState("navbar-transparent");
@@ -66,7 +67,9 @@ const HomeNavbar = (props) => {
                         <NavLink className="link padding-right" href="/login">Login</NavLink>
                     </NavItem>
                     <NavItem>
-                        <Button color="success">Sign Up</Button>
+                        <Link to="/signup">
+                            <Button color="success">Sign Up</Button>
+                        </Link>
                     </NavItem>
                 </Nav>
             </Collapse>

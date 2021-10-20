@@ -133,6 +133,20 @@ Input {
   margin: 100px 0 60px;
 }
 
+.main-login-section{
+  height: 100vh;
+  background-size: cover;
+  padding-top: 150px;
+  background-image: url(https://images.pexels.com/photos/94273/jetty-beach-sunset-sea-94273.jpeg);
+}
+
+.main-signup-section{
+  height: 100vh;
+  background-size: cover;
+  padding-top: 120px;
+  background-image: url(https://images.pexels.com/photos/94273/jetty-beach-sunset-sea-94273.jpeg);
+}
+
 a{
   color: #000!important;
   text-decoration: none!important;
@@ -152,7 +166,7 @@ a:hover{
 
 .footer{
   padding: 20px 0;
-  background-color: #66d55c;
+  background-color: #00b260;
 }
 
 /* NAVIGATION */
@@ -448,4 +462,40 @@ a:hover{
   border-radius: 15px;
   padding: 5px 10px;
   margin: 0px 10px;
+}
+
+/*Login Form*/
+.loginFormInput{
+  padding: 0.575rem .75rem!important;
+}
+
+.sign-in-btn{
+  margin-right: 10px;
+}
+
+.login-form-group{
+  margin-bottom: 20px;
+}
+
+.link{
+  text-decoration: none!important;
+  color: #000;
+}
+
+.link:hover{
+    color: #777777!important;
+}
+
+.password-field{
+  border-right: none!important;
+}
+
+.inputPasswordIcon{
+  margin-top: 0px;
+  height: 48px;
+  background-color: #fff!important;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-left: none!important;
+  border-radius: 0!important;
 }

@@ -13,6 +13,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import SingleRecipe from './views/SingleRecipe';
 import Login from './views/Login';
+import SignUp from './views/SignUp';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -32,6 +33,10 @@ ReactDOM.render(
       <Route 
         path="/login" exact
         render={(props) => <Login {...props}/>}
+      />
+      <Route 
+        path="/signup" exact
+        render={(props) => <SignUp {...props}/>}
       />
     </Switch>
   </BrowserRouter>,
