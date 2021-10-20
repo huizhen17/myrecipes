@@ -3,6 +3,7 @@ const axios = require('axios');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const verify = require('./routes/verifyJWToken');
 
 const Food = require('./models/recipe.js');
 const User = require('./models/user.js');
@@ -51,6 +52,7 @@ app.post('/register',async (req,res)=>{
         password: hashPassword,
         repassword: hashRePassword
     });
+
     try{
         const savedUser = await user.save();
         res.send({user: user._id});
@@ -76,12 +78,15 @@ app.post('/login', async(req, res)=>{
 
     //Create and assign a token when login
     const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
-    res.header('auth-token',token).send(token);
+    //res.header('auth-token',token).send(token);
 
-
+    res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        token: token
+    });
     //res.send("Success");
-
-
 });
 
 //Request to search for a food and add to MongoDb
@@ -140,7 +145,7 @@ app.get('/recipe/:id', (req, res)=>{
     .catch(err => res.status(400).json(`Error ${err}`));
 })
 
-app.put("/update/:id", (req, res)=>{
+app.put("/update/:id",verify, (req, res)=>{
     console.log("Update food based on the ID")
     Food.findById(req.params.id)
     .then(food => {
@@ -159,9 +164,9 @@ app.put("/update/:id", (req, res)=>{
 })
 
 //Delete Recipe By ID
-app.delete('/recipe/:id', (req, res)=>{
+app.delete('/recipe/:id',verify,(req, res)=>{
     Food.findByIdAndDelete(req.params.id)
-    .then(() => res.json("The menu is deleted"))
+    .then(() => res.send("The menu is deleted"))
     .catch(err => res.status(400).json(`Error: ${err}`))
 })
 
