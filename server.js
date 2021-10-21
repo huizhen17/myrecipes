@@ -35,20 +35,20 @@ app.get('/',(req,res)=>{
 app.post('/register',async (req,res)=>{
 
     //Checking if user email is already in the database
-    const emailExist = await User.findOne({email: req.body.email});
+    const emailExist = await User.findOne({email: req.body.signUpEmail});
     if(emailExist){
-        return res.status(400).send('Email already exists');
+        return res.status(400).send('User already registered.');
     }
 
     //Password Hashing
     const salt = await bcrypt.genSalt(10);
-    const hashPassword = await bcrypt.hash(req.body.password, salt);
-    const hashRePassword = await bcrypt.hash(req.body.repassword, salt);
+    const hashPassword = await bcrypt.hash(req.body.signUpPass, salt);
+    const hashRePassword = await bcrypt.hash(req.body.signUpRePass, salt);
 
     //Create a new user
     const user = new User({
-        name: req.body.name,
-        email: req.body.email,
+        name: req.body.signUpName,
+        email: req.body.signUpEmail,
         password: hashPassword,
         repassword: hashRePassword
     });
@@ -63,7 +63,7 @@ app.post('/register',async (req,res)=>{
 
 app.post('/login', async(req, res)=>{
 
-    const user = await User.findOne({email: req.body.email});
+    const user = await User.findOne({email: req.body.loginEmail});
 
     //Check if the email exists
     if(!user){
@@ -71,7 +71,7 @@ app.post('/login', async(req, res)=>{
     }
 
     //Check if password is valid
-    const validPass = await bcrypt.compare(req.body.password, user.password);
+    const validPass = await bcrypt.compare(req.body.loginPass, user.password);
     if(!validPass){
         return res.status(400).send('Invalid Password.');
     }
@@ -139,7 +139,6 @@ app.post('/search',(req,res)=>{
 
 //Get Specific Menu from ID
 app.get('/recipe/:id', (req, res)=>{
-    console.log("Read Food based on ID")
     Food.findById(req.params.id)
     .then(food => res.json(food))
     .catch(err => res.status(400).json(`Error ${err}`));
@@ -164,7 +163,7 @@ app.put("/update/:id",verify, (req, res)=>{
 })
 
 //Delete Recipe By ID
-app.delete('/recipe/:id',verify,(req, res)=>{
+app.delete('/:id',(req, res)=>{
     Food.findByIdAndDelete(req.params.id)
     .then(() => res.send("The menu is deleted"))
     .catch(err => res.status(400).json(`Error: ${err}`))

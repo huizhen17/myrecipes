@@ -18,7 +18,10 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
-const HomeNavbar = (props) => {
+const HomeNavbar = ({setLoginUser}) => {
+
+    //console.log(setLoginUser);
+
     const [navbarColor, setNavbarColor] = useState("navbar-transparent");
     const [isOpen, setIsOpen] = useState(false);
 
@@ -54,12 +57,15 @@ const HomeNavbar = (props) => {
                         <DropdownToggle className="link padding-right" nav caret>
                             My Profile
                         </DropdownToggle>
-                        <DropdownMenu right>
-                            <DropdownItem>
+                        <DropdownMenu right style={{marginTop:"12px"}}>
+                            <DropdownItem className="dropdownItem">
                                 Edit Profile
                             </DropdownItem>
-                            <DropdownItem>
+                            <DropdownItem className="dropdownItem">
                                 Favourite Menu
+                            </DropdownItem>
+                            <DropdownItem className="dropdownItem">
+                                Log Out
                             </DropdownItem>
                         </DropdownMenu>
                     </UncontrolledDropdown>

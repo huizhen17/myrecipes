@@ -123,6 +123,10 @@ Input {
   cursor: default;
 }
 
+.dropdownItem{
+  padding: .65rem 1rem!important;
+}
+
 .section {
   /* height: 100vh; */
   margin: 80px 0;
@@ -134,16 +138,18 @@ Input {
 }
 
 .main-login-section{
-  height: 100vh;
+  min-height: 100vh;
   background-size: cover;
   padding-top: 150px;
   background-image: url(https://images.pexels.com/photos/94273/jetty-beach-sunset-sea-94273.jpeg);
 }
 
 .main-signup-section{
-  height: 100vh;
+  /* min-height: 100vh; */
+  min-height: 100vh;
   background-size: cover;
-  padding-top: 120px;
+  padding-top: 150px;
+  padding-bottom: 100px;
   background-image: url(https://images.pexels.com/photos/94273/jetty-beach-sunset-sea-94273.jpeg);
 }
 
@@ -167,6 +173,14 @@ a:hover{
 .footer{
   padding: 20px 0;
   background-color: #00b260;
+}
+
+.btn-modal-delete{
+  color: #ce0000 !important;
+}
+
+.btn-modal-delete:hover{
+  color: #9c0000 !important;
 }
 
 /* NAVIGATION */
@@ -304,7 +318,8 @@ a:hover{
 }
 
 .fa-lightbulb-o{
-  color: #55550f;
+  margin-top: 20px;
+  color: #000000;
   font-size: 40px;
 }
 
@@ -498,4 +513,8 @@ a:hover{
   border: 1px solid #ced4da;
   border-left: none!important;
   border-radius: 0!important;
+}
+
+.login-button-container{
+  margin: 30px 0 10px;
 }

@@ -22,19 +22,19 @@ import {
 function Recipe({foodList}) {
 
   const [modal, setModal] = useState(false);
+  const [recipe, setRecipe] = useState(false);
 
   const toggleModal = (e) => {
+    setRecipe(e);
     setModal(!modal);
   };
 
-  const deleteRecipe = (id) => {
-    console.log(id)
-    axios.delete(`/recipe/${id}`)
+  const deleteRecipe = () => {
+    axios.delete(`/${recipe}`)
     .then((res) => {
       window.location.reload(false);
     })
     .catch(err => console.log(err));
-
   }
 
   return (
@@ -73,44 +73,49 @@ function Recipe({foodList}) {
                           <Link to={`/recipe/${food._id}`}>
                             <Button color="success">View More</Button>
                           </Link>
-                          <Button color="danger" onClick={toggleModal}className="delete-search">Delete</Button>
+                          <Button color="danger" onClick={()=>toggleModal(`${food._id}`)} className="delete-search">Delete</Button>
                           </div>
                         </CardBody>
                       </Card>
                     </Col>
-                    {/*Modal*/}
-                    <Modal
-                      className="modal-mini modal-primary"
-                      isOpen={modal}
-                      toggle={toggleModal}
-                    >
-                      <ModalBody className="text-center justify-content-center">
-                          <i className="fa fa-lightbulb-o modal-profile" aria-hidden="true"></i>
-                          <h5 className="small-title" style={{fontWeight:"400"}}>Are you sure want delete this chapter?</h5>
-                      </ModalBody>
-                      <div className="modal-footer">
-                          <div className="custom-left-side">
-                            <Button
-                              className="btn-link"
-                              color="default"
-                              type="button"
-                              onClick={toggleModal}
-                              >
-                              Cancel
-                            </Button>
-                          </div>
-                          <div className="divider" />
-                          <div className="custom-right-side">
-                            <Button className="btn-link" onClick={()=>deleteRecipe(food._id)} color="default" type="button">
-                              Delete
-                            </Button>
-                          </div>
-                      </div>
-                  </Modal>    
                 </>
                 )
             })}                    
             </Row>
+            {/*Modal*/}
+            <Modal
+              className="modal-mini modal-primary"
+              isOpen={modal}
+              toggle={toggleModal}
+            >
+              <ModalBody className="text-center justify-content-center">
+                  <i className="fa fa-lightbulb-o modal-profile" aria-hidden="true"></i>
+                  <h5 className="small-title" style={{fontWeight:"400"}}>Delete this history?</h5>
+              </ModalBody>
+              <div className="modal-footer">
+                  <div className="custom-left-side">
+                    <Button
+                      className="btn-link"
+                      color="default"
+                      type="button"
+                      onClick={toggleModal}
+                      >
+                        Cancel
+                    </Button>
+                  </div>
+                  <div className="divider" />
+                  <div className="custom-right-side">
+                    <Button 
+                      className="btn-link btn-modal-delete" 
+                      color="default" 
+                      type="button"                      
+                      onClick={deleteRecipe}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+              </div>
+          </Modal>    
         </div>
       </Container>
     </div>

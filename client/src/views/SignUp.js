@@ -1,5 +1,6 @@
+import axios from 'axios';
 import React, {useState} from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import {
     Container,
@@ -14,11 +15,14 @@ import {
     FormGroup,
     InputGroup,
     InputGroupAddon,
-    InputGroupText
+    InputGroupText,
+    Alert
 } from "reactstrap";
 import HomeNavbar from '../components/HomeNavbar';
 
 function SignUp() {
+
+    const history = useHistory();
 
     const [signUpName, setSignUpName] = useState("");
     const [signUpEmail, setSignUpEmail] = useState("");
@@ -37,7 +41,36 @@ function SignUp() {
         setRePasswordShown(value);
     };
 
-    // const [error, setError] = useState("");
+    const [error, setError] = useState("");
+    const [message, setMessage] = useState("");
+
+    const createAccount = async(e) => {
+        e.preventDefault();
+
+        if( signUpPass !== signUpRePass) {
+            setMessage("Password Not Match.");
+        }
+        else{
+            setMessage("");
+
+            try {
+                const config = {
+                    headers: {
+                        "Content-type": "application/json",
+                    },
+                };
+
+                const { data } = await axios.post("http://localhost:5000/register", {signUpName, signUpEmail, signUpPass, signUpRePass} , config);
+
+                setError("");
+
+            } catch (error) {
+                setError(error.response.data);
+                console.log(error.response.data);
+            }
+        }
+        
+    } 
 
     return (
         <div>
@@ -50,9 +83,9 @@ function SignUp() {
                             <Jumbotron>
                                 <Card>
                                     <CardBody className="m-4">
-                                        <Form className="login-form">                                          
-                                            <h2 className="title no-margin-top" >Create a New Account</h2>
-                                            <p className="title">It's quick and easy.</p>
+                                        <Form className="login-form" onSubmit={createAccount}>                                          
+                                            <h2 className="small-title no-margin-top" >Create a New Account</h2>
+                                            <p className="small-title">It's quick and easy.</p>
                                             <FormGroup className="login-form-group">
                                                 <Input className="loginFormInput" autoFocus required placeholder="Username" type="text" value={signUpName} onChange={(e)=>setSignUpName(e.target.value)}/>
                                             </FormGroup>
@@ -79,7 +112,17 @@ function SignUp() {
                                                     </InputGroupAddon>
                                                 </InputGroup>
                                             </FormGroup>
-                                            <div>    
+                                            { message && 
+                                                <Alert color="warning">
+                                                    {message}
+                                                </Alert>
+                                            }    
+                                            { error && 
+                                                <Alert color="danger">
+                                                    {error}
+                                                </Alert>
+                                            }     
+                                            <div className="login-button-container">    
                                                 <Button block className="btn-round sign-in-btn" color="success" type="submit">
                                                     Sign Up
                                                 </Button>
