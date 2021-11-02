@@ -7,6 +7,7 @@ const verify = require('./routes/verifyJWToken');
 
 const Food = require('./models/recipe.js');
 const User = require('./models/user.js');
+const Favourite = require('./models/favourite.js');
 
 const app = express()
 const port = process.env.PORT || 5000
@@ -144,16 +145,51 @@ app.get('/recipe/:id', (req, res)=>{
     .catch(err => res.status(400).json(`Error ${err}`));
 })
 
-app.put("/update/:id",verify, (req, res)=>{
-    console.log("Update food based on the ID")
+//Store recipe into favourite
+app.post('/recipe/:id', (req, res)=>{
+    //store into new schema
+    favValue = new Favourite ({
+        recipeID: req.params.id,
+        recipeName: req.body.recTitle,
+        recipeImage: req.body.recImg,
+        recipeIngredient: req.body.recIng,
+        recipeMealType: req.body.recMeal,
+        recipeDishType: req.body.recDish,
+        userID: req.body.userid
+    });
+
+    favValue.save().then(result=> {
+        res.json(result);
+    })
+    .catch (error=> {
+        console.log("Error" + error);
+    }); 
+})
+
+app.post('/favourited', (req, res)=>{
+    //console.log(req.body.userid + "  " + req.body.recipeID)
+    Favourite.find({"userID":req.body.userid, "recipeID": req.body.recipeID})
+    .then(favourite => {
+        let result = false;
+        if(favourite.length !== 0){
+            result = true //Favourite menu found
+        }
+        res.status(200).json({success: true, favorited: result});
+    })
+    .catch(err => res.status(400).json(`Error: ${err}`))
+})
+
+//Delete Recipe By ID
+app.post('/remove',(req, res)=>{
+    Favourite.findOneAndDelete({"userID":req.body.userid, "recipeID": req.body.recipeID})
+    .then(() => res.send("The menu is deleted from your favourite"))
+    .catch(err => res.status(400).json(`Error: ${err}`))
+})
+
+app.put("/recipe/:id/edit", (req, res)=>{
     Food.findById(req.params.id)
     .then(food => {
         food.foodTitle = req.body.title;
-        food.foodAisle = req.body.aisle;
-        food.foodUnit = req.body.unit;
-        food.recipeName = req.body.name;
-        food.recipeImage = req.body.image;
-        food.recipeIngredient = req.body.ingredient;
 
         food.save()
         .then(() => res.json("The menu is updated successfully"))

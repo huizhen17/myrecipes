@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router';
 // nodejs library that concatenates strings
 import classnames from "classnames";
 import {
@@ -18,12 +19,12 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
-const HomeNavbar = ({setLoginUser}) => {
-
-    //console.log(setLoginUser);
+const HomeNavbar = ({user}) => {
 
     const [navbarColor, setNavbarColor] = useState("navbar-transparent");
     const [isOpen, setIsOpen] = useState(false);
+
+    const history = useHistory();
 
     const toggle = () => setIsOpen(!isOpen);
     
@@ -43,6 +44,12 @@ const HomeNavbar = ({setLoginUser}) => {
         };
     });
 
+    const logOut = () => {
+        localStorage.removeItem("userinfo");
+        history.push('/');
+        window.location.reload(false);
+    }
+
     return (
     <div>
       <Navbar className={classnames("nav-bar fixed-top", navbarColor)}  expand="md">
@@ -53,30 +60,40 @@ const HomeNavbar = ({setLoginUser}) => {
             <NavbarToggler onClick={toggle} />
             <Collapse isOpen={isOpen} navbar>
                 <Nav className="mr-auto float-right" navbar>
-                    <UncontrolledDropdown nav inNavbar>
-                        <DropdownToggle className="link padding-right" nav caret>
-                            My Profile
-                        </DropdownToggle>
-                        <DropdownMenu right style={{marginTop:"12px"}}>
-                            <DropdownItem className="dropdownItem">
-                                Edit Profile
-                            </DropdownItem>
-                            <DropdownItem className="dropdownItem">
-                                Favourite Menu
-                            </DropdownItem>
-                            <DropdownItem className="dropdownItem">
-                                Log Out
-                            </DropdownItem>
-                        </DropdownMenu>
-                    </UncontrolledDropdown>
-                    <NavItem>
-                        <NavLink className="link padding-right" href="/login">Login</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <Link to="/signup">
-                            <Button color="success">Sign Up</Button>
-                        </Link>
-                    </NavItem>
+                    {user.length === 0 ? 
+                        <>
+                            <NavItem>
+                                <NavLink className="link padding-right" href="/login">Login</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <Link to="/signup">
+                                    <Button color="success">Sign Up</Button>
+                                </Link>
+                            </NavItem>
+                        </>
+                    :
+                        <UncontrolledDropdown nav inNavbar>
+                            <DropdownToggle className="link padding-right" nav caret>
+                                {user.name}
+                            </DropdownToggle>
+                            <DropdownMenu right style={{marginTop:"12px"}}>
+                                <Link to={'/profile'}>
+                                    <DropdownItem className="dropdownItem">
+                                        Edit Profile
+                                    </DropdownItem>
+                                </Link>
+                                <Link to={'/favourite'}>
+                                    <DropdownItem className="dropdownItem">
+                                        Favourite Menu
+                                    </DropdownItem>
+                                </Link>
+                                <DropdownItem className="dropdownItem" onClick={logOut}>
+                                    Log Out
+                                </DropdownItem>
+                            </DropdownMenu>
+                        </UncontrolledDropdown>
+                        
+                    }
                 </Nav>
             </Collapse>
         </Container>

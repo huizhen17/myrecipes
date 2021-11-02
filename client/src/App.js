@@ -1,5 +1,5 @@
 //import '/assets/App.css';
-import React, {useState} from 'react';
+import React, {useState , useEffect} from 'react';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 
@@ -13,11 +13,28 @@ import Login from './views/Login';
 import Homepage from './views/Homepage';
 import SignUp from './views/SignUp';
 import SingleRecipe from './views/SingleRecipe';
+import UpdateMenu from './views/UpdateMenu';
+import Favourite from './views/Favourite';
+import Profile from './views/Profile';
 
 
 function App() {
 
-  const [user, setLoginUser] = useState({})
+  const [user, setLoginUser] = useState([]);
+
+  useEffect(() => {
+    getLocalUsers();
+  },[]);
+
+  const getLocalUsers = () => {
+    if(localStorage.getItem('userinfo') === null){
+      localStorage.setItem('userinfo',JSON.stringify([]));
+    }else{
+      let user = JSON.parse(localStorage.getItem('userinfo'));
+      setLoginUser(user);
+    }
+  };
+
 
   return (
     <>
@@ -26,30 +43,48 @@ function App() {
           <Route 
             exact 
             path="/"
-            render={(props) => <Homepage setLoginUser={setLoginUser} />}
+            render={(props) => <Homepage user={user} />}
           />
-            {/* {
-              user && user._id ? <Homepage setLoginUser={setLoginUser} /> : <Login setLoginUser={setLoginUser}/>
-            } */}
           <Route 
             path="/recipe/:id" exact
             render={(props) => <SingleRecipe {...props}/>}
           />
           <Route 
-            path="/update/:id" exact
-          >
-            {
-              user && user._id ? <SingleRecipe setLoginUser={setLoginUser} /> : <Login setLoginUser={setLoginUser}/>
+            path="/recipe/:id/edit" exact
+            render={(props)=> <UpdateMenu {...props}/>}
+          />
+            {/* {
+              user && user._id ? <UpdateMenu user={user} /> : <Login user={user}/>
             }
-          </Route>
+          </Route> */}
           <Route 
             path="/login" exact
-            component={()=> <Login setLoginUser={setLoginUser}/>}
-          />
+          >
+          {
+            user && user._id ? <Homepage user={user}/> : <Login user={user}/>
+          }
+          </Route>
           <Route 
             path="/signup" exact
-            render={(props) => <SignUp {...props}/>}
-          />
+          >
+          {
+            user && user._id ? <Homepage user={user}/> : <SignUp user={user}/>
+          }
+          </Route>
+          <Route 
+            path="/profile" exact
+          >
+          {
+            user && user._id ? <Profile user={user}/> : <Login user={user}/>
+          }
+          </Route>
+          <Route 
+            path="/favourite" exact
+          >
+          {
+            user && user._id ? <Favourite user={user}/> : <Login user={user}/>
+          }
+          </Route>
         </Switch>
       </Router>
     </>

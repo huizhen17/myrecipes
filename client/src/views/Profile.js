@@ -1,6 +1,6 @@
-import axios from 'axios';
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { Link, useHistory } from 'react-router-dom';
+import HomeNavbar from '../components/HomeNavbar';
 
 import {
     Container,
@@ -13,13 +13,28 @@ import {
     Card,
     Button,
     FormGroup,
-    InputGroup,
-    InputGroupAddon,
     InputGroupText,
+    InputGroupAddon,
+    InputGroup,
     Alert
 } from "reactstrap";
 
-function SignUp() {
+function Profile() {
+    const [user, setLoginUser] = useState({});
+
+    useEffect(() => {
+      getLocalUsers();
+    },[]);
+  
+    const getLocalUsers = () => {
+      if(localStorage.getItem('userinfo') === null){
+        localStorage.setItem('userinfo',JSON.stringify([]));
+        setLoginUser([]);
+      }else{
+        let user = JSON.parse(localStorage.getItem('userinfo'));
+        setLoginUser(user);
+      }
+    };
 
     const [signUpName, setSignUpName] = useState("");
     const [signUpEmail, setSignUpEmail] = useState("");
@@ -41,37 +56,10 @@ function SignUp() {
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
 
-    const createAccount = async(e) => {
-        e.preventDefault();
-
-        if( signUpPass !== signUpRePass) {
-            setMessage("Password Not Match.");
-        }
-        else{
-            setMessage("");
-
-            try {
-                const config = {
-                    headers: {
-                        "Content-type": "application/json",
-                    },
-                };
-
-                const { data } = await axios.post("/register", {signUpName, signUpEmail, signUpPass, signUpRePass} , config);
-
-                setError("");
-
-            } catch (error) {
-                setError(error.response.data);
-                console.log(error.response.data);
-            }
-        }
-        
-    } 
-
     return (
-        <div>
-            <div className="main-signup-section" style={{backgroundImage:"url(" + require("../assets/img/login-section.jpg").default + ")", opacity: 1}}>
+        <>
+        <HomeNavbar user={user}/>
+        <div className="main-signup-section" style={{backgroundImage:"url(" + require("../assets/img/login-section.jpg").default + ")", opacity: 1}}>
                 <Container>
                     <Row>
                         <Col/>
@@ -79,14 +67,14 @@ function SignUp() {
                             <Jumbotron>
                                 <Card>
                                     <CardBody className="m-4">
-                                        <Form className="login-form" onSubmit={createAccount}>                                          
-                                            <h2 className="small-title no-margin-top" >Create a New Account</h2>
-                                            <p className="small-title">It's quick and easy.</p>
+                                        <Form className="login-form" >                                          
+                                            { user.name && <h2 className="small-title no-margin-top" >Welcome, {user.name}!</h2>}
+                                            <p className="small-title">Reset your password? </p>
                                             <FormGroup className="login-form-group">
-                                                <Input className="loginFormInput" autoFocus required placeholder="Username" type="text" value={signUpName} onChange={(e)=>setSignUpName(e.target.value)}/>
+                                                <Input className="loginFormInput" disabled placeholder="Username" type="text" value={user.name} onChange={(e)=>setSignUpName(e.target.value)}/>
                                             </FormGroup>
                                             <FormGroup className="login-form-group">
-                                                <Input className="loginFormInput" required placeholder="Email" type="email" value={signUpEmail} onChange={(e)=>setSignUpEmail(e.target.value)}/>
+                                                <Input className="loginFormInput" disabled placeholder="Email" type="email" value={user.email} onChange={(e)=>setSignUpEmail(e.target.value)}/>
                                             </FormGroup>
                                             <FormGroup className="login-form-group">
                                                 <InputGroup>
@@ -120,13 +108,8 @@ function SignUp() {
                                             }     
                                             <div className="login-button-container">    
                                                 <Button block className="btn-round sign-in-btn" color="success" type="submit">
-                                                    Sign Up
+                                                    Reset My Passowrd
                                                 </Button>
-                                                <Link to="/login">
-                                                <Button block className="link" type="button" color="link">
-                                                    Login Here
-                                                </Button>
-                                                </Link>
                                             </div>
                                         </Form>
                                     </CardBody>
@@ -136,9 +119,10 @@ function SignUp() {
                         <Col/>
                     </Row>
                 </Container>
-            </div>   
-        </div>
+            </div>
+            
+        </>
     )
 }
 
-export default SignUp;
+export default Profile

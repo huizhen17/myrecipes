@@ -183,6 +183,20 @@ a:hover{
   color: #9c0000 !important;
 }
 
+.alert-fav{
+  width: fit-content!important;
+    margin: 0 20px !important;
+    position: fixed !important;
+    /* left: 75%; */
+    right: 0;
+}
+
+.add-fav-btn{
+  background-color: #003d04!important;
+  color: #fff;
+  border-color: #003d04!important;
+}
+
 /* NAVIGATION */
 .nav-bar {
   /* display: block!important;
@@ -195,6 +209,12 @@ a:hover{
 
 .link{
   color: #000!important;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+  color: #fff;
+  text-decoration: none;
+  background-color: green!important;
 }
 
 .finder{

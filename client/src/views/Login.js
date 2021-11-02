@@ -18,9 +18,8 @@ import {
     InputGroup,
     Alert
 } from "reactstrap";
-import HomeNavbar from '../components/HomeNavbar';
 
-function Login({setLoginUser}) {
+function Login() {
 
     const history = useHistory();
 
@@ -46,9 +45,10 @@ function Login({setLoginUser}) {
                 },
             };
 
-            await axios.post("http://localhost:5000/login", {loginEmail, loginPass} , config)
+            await axios.post("/login", {loginEmail, loginPass} , config)
             .then((res)=>{
                 //setLoginUser(res.data);
+                localStorage.setItem("userinfo", JSON.stringify(res.data));
                 console.log(res.data);
                 setError("");
                 history.push('/');    
@@ -62,7 +62,6 @@ function Login({setLoginUser}) {
 
     return (
         <div>
-            <HomeNavbar/>
             <div className="main-login-section" style={{backgroundImage:"url(" + require("../assets/img/login-section.jpg").default + ")", opacity: 1}}>
                 <Container>
                     <Row>

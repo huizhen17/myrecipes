@@ -62,9 +62,25 @@ function Homepage() {
     setSearch('');
   }
 
+  const [user, setLoginUser] = useState({});
+
+  useEffect(() => {
+    getLocalUsers();
+  },[]);
+
+  const getLocalUsers = () => {
+    if(localStorage.getItem('userinfo') === null){
+      localStorage.setItem('userinfo',JSON.stringify([]));
+      setLoginUser([]);
+    }else{
+      let user = JSON.parse(localStorage.getItem('userinfo'));
+      setLoginUser(user);
+    }
+  };
+
   return (
     <>
-    <HomeNavbar/>
+    <HomeNavbar user={user}/>
     <div>
       <div className="search-container" 
           style={{
