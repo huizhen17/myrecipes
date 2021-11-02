@@ -76,9 +76,8 @@ function SingleRecipe(props) {
     const addFavourite = async(userid,favor) => {
         if(userid != null){
             if(favor === true){
-                console.log(recipeID + "  " + userid)
                 //remove from favourite db
-                await axios.post("/remove",{userid,recipeID})
+                await axios.post("/removefav",{userid,recipeID})
                 .then((res) => {
                     setFavorited(false);
                     setVisible(true);

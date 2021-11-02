@@ -179,7 +179,7 @@ app.post('/favourited', (req, res)=>{
 })
 
 //Delete Recipe By ID
-app.post('/remove',(req, res)=>{
+app.post('/removefav',(req, res)=>{
     Favourite.findOneAndDelete({"userID":req.body.userid, "recipeID": req.body.recipeID})
     .then(() => res.send("The menu is deleted from your favourite"))
     .catch(err => res.status(400).json(`Error: ${err}`))
