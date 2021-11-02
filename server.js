@@ -30,7 +30,6 @@ app.get('/',(req,res)=>{
     Food.find().sort({createdAt: -1})
     .then(food => res.json(food))
     .catch(err => res.status(400).json(`Error: ${err}`));
-
 });
 
 app.post('/register',async (req,res)=>{
@@ -185,6 +184,12 @@ app.post('/remove',(req, res)=>{
     .then(() => res.send("The menu is deleted from your favourite"))
     .catch(err => res.status(400).json(`Error: ${err}`))
 })
+
+app.get('/favourite',(req,res)=>{
+    Favourite.find().sort({createdAt: -1})
+    .then(food => res.json(food))
+    .catch(err => res.status(400).json(`Error: ${err}`));
+});
 
 app.put("/recipe/:id/edit", (req, res)=>{
     Food.findById(req.params.id)

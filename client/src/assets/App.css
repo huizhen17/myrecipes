@@ -134,7 +134,12 @@ Input {
 
 .main-section {
   /* height: 100vh; */
-  margin: 100px 0 60px;
+  min-height: 100vh;
+  margin: 120px 0 60px;
+}
+
+.copyright{
+  color: #fff!important;
 }
 
 .main-login-section{

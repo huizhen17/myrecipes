@@ -109,7 +109,7 @@ function SingleRecipe(props) {
                 {error && <h3>{error}</h3>}
                 <Row>
                     <Col>
-                        <img className="single-recipe-image"  src={recImg} alt="Food"/>
+                        <img className="single-recipe-image"  src={recImg === null ? require("../assets/img/menu_placeholder.png").default : recImg } alt="Food"/>
                     </Col>
                     <Col>
                         <div>

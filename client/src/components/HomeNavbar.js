@@ -79,7 +79,7 @@ const HomeNavbar = ({user}) => {
                             <DropdownMenu right style={{marginTop:"12px"}}>
                                 <Link to={'/profile'}>
                                     <DropdownItem className="dropdownItem">
-                                        Edit Profile
+                                        View Profile
                                     </DropdownItem>
                                 </Link>
                                 <Link to={'/favourite'}>

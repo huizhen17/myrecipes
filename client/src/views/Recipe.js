@@ -54,7 +54,7 @@ function Recipe({foodList}) {
                 <>
                     <Col className="search-row-container" lg="4">
                       <Card key={key}>
-                        <CardImg top width="100%" draggable="false" src={food.recipeImage} alt="Card image cap" />
+                        <CardImg top width="100%" draggable="false" src={food.recipeImage === null ? require("../assets/img/menu_placeholder.png").default : food.recipeImage } alt="Card image cap" />
                         <CardBody>
                           <Link to={`/recipe/${food._id}`}>
                             <CardTitle tag="h5" className="small-title pointer">{food.recipeName}</CardTitle>
