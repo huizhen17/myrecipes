@@ -22,7 +22,7 @@ import {
 function Recipe({foodList}) {
 
   const [modal, setModal] = useState(false);
-  const [recipe, setRecipe] = useState(false);
+  const [recipe, setRecipe] = useState("");
 
   const toggleModal = (e) => {
     setRecipe(e);

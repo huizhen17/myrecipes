@@ -142,6 +142,10 @@ Input {
   color: #fff!important;
 }
 
+.modal-footer-fav{
+  padding: 15px 10px!important;
+}
+
 .main-login-section{
   min-height: 100vh;
   background-size: cover;
@@ -300,7 +304,7 @@ a:hover{
 
 .modal-footer {
   border-top: 1px solid #dedede;
-  padding: 0px!important;
+  padding: 0px;
   flex-wrap: nowrap!important;
 }
 

@@ -12,7 +12,15 @@ import {
   Container,
   Row,
   Col,
-  Alert
+  Alert,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Form,
+  FormGroup,
+  Input,
+  Label
 } from "reactstrap";
 import HomeNavbar from '../components/HomeNavbar';
 
@@ -21,10 +29,32 @@ function Favourite() {
     const [favList, setFavList] = useState([]);
     const [error, setError] = useState("");
     const [visible, setVisible] = useState(false);
+    const [modal, setModal] = useState(false);
+    const [userid, setUserID] = useState("");
+    const [recipeID, setRecipeID] = useState("");
+    const [recipeTitle, setRecipeTitle] = useState("");
 
     window.setTimeout(() => { 
       setVisible(false);
     }, 6000);
+
+    const toggleModal = (userID, recipeID, recipeTitle) => {
+      setUserID(userID);
+      setRecipeID(recipeID);
+      setRecipeTitle(recipeTitle);
+      console.log(recipeTitle)
+      setModal(!modal);
+    };
+
+    const updateMenu = async() => {
+      await axios.put('/favourite/update',{userid, recipeID, recipeTitle})
+      .then(res => {
+        console.log(res.data)
+        
+        window.location.reload(false);
+      })
+      .catch(error => setError(error));
+    }
 
     useEffect(() => {
       getLocalUsers();
@@ -117,10 +147,8 @@ function Favourite() {
                           })}  
                           </CardText>
                           <div style={{margin:"20px 0 10px 0"}}>
-                          <Link to={`/recipe/${food._id}`}>
-                            <Button color="success">Update</Button>
-                          </Link>
-                          <Button color="warning" className="delete-search" onClick={()=>removeFavourite(user._id, food.recipeID)}>Remove</Button>
+                            <Button color="success" onClick={()=>toggleModal(user._id, food.recipeID, food.recipeName)}>Update</Button>
+                            <Button color="warning" className="delete-search" onClick={()=>removeFavourite(user._id, food.recipeID)}>Remove</Button>
                           </div>
                         </CardBody>
                       </Card>
@@ -129,6 +157,37 @@ function Favourite() {
                )
               })}    
             </Row>
+            {/*Modal*/}
+            <Modal
+              isOpen={modal}
+              toggle={toggleModal}
+            >
+              <ModalHeader >
+                Update the Menu
+              </ModalHeader>
+              <ModalBody>
+                <Form>                
+                    <FormGroup className="login-form-group">
+                        <Label className="form-label small-title">New Recipe Name</Label>
+                        <Input className="loginFormInput"  placeholder="Recipe Title" type="text" value={recipeTitle} onChange={(e)=>setRecipeTitle(e.target.value)} />
+                    </FormGroup>
+                </Form>
+              </ModalBody>
+              <ModalFooter className="modal-footer-fav">
+                <Button
+                  style={{marginRight:"15px"}}
+                  onClick={toggleModal}
+                >
+                  Cancel
+                </Button>
+                {' '}
+                <Button 
+                  color="success"
+                  onClick={updateMenu}>
+                  Update
+                </Button>
+              </ModalFooter>
+          </Modal>    
           </Container>
         </div>
         <footer className="footer footer-black footer-white">

@@ -191,14 +191,13 @@ app.get('/favourite',(req,res)=>{
     .catch(err => res.status(400).json(`Error: ${err}`));
 });
 
-app.put("/recipe/:id/edit", (req, res)=>{
-    Food.findById(req.params.id)
+app.put("/favourite/update", (req, res)=>{
+    console.log(req.body.userid+" "+ req.body.recipeID+" "+ req.body.recipeTitle)
+    Favourite.findOneAndUpdate({"userID":req.body.userid}, {"recipeID": req.body.recipeID},{
+        "recipeName": req.body.recipeTitle
+    })
     .then(food => {
-        food.foodTitle = req.body.title;
-
-        food.save()
-        .then(() => res.json("The menu is updated successfully"))
-        .catch(err => res.status(400).json(`Error: ${err}`))
+        res.json("The menu is updated successfully")
     })
     .catch(err => res.status(400).json(`Error: ${err}`))
 })
