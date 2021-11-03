@@ -30,6 +30,7 @@ function Favourite() {
     const [error, setError] = useState("");
     const [visible, setVisible] = useState(false);
     const [modal, setModal] = useState(false);
+    const [id, setID] = useState("");
     const [userid, setUserID] = useState("");
     const [recipeID, setRecipeID] = useState("");
     const [recipeTitle, setRecipeTitle] = useState("");
@@ -38,16 +39,17 @@ function Favourite() {
       setVisible(false);
     }, 6000);
 
-    const toggleModal = (userID, recipeID, recipeTitle) => {
+    const toggleModal = (id, userID, recipeID, recipeTitle) => {
       setUserID(userID);
       setRecipeID(recipeID);
       setRecipeTitle(recipeTitle);
-      console.log(recipeTitle)
+      setID(id);
+      console.log(id)
       setModal(!modal);
     };
 
     const updateMenu = async() => {
-      await axios.put('/favourite/update',{userid, recipeID, recipeTitle})
+      await axios.put(`/favourite/${id}`,{userid, recipeID, recipeTitle})
       .then(res => {
         console.log(res.data)
         
@@ -58,39 +60,49 @@ function Favourite() {
 
     useEffect(() => {
       getLocalUsers();
-    },[]);
+    },[visible]);
   
-    const getLocalUsers = () => {
+    const getLocalUsers = async() => {
       if(localStorage.getItem('userinfo') === null){
         localStorage.setItem('userinfo',JSON.stringify([]));
         setLoginUser([]);
       }else{
-        let user = JSON.parse(localStorage.getItem('userinfo'));
+        let user = await JSON.parse(localStorage.getItem('userinfo'));
+        var userid = user._id;
         setLoginUser(user);
+        await axios.get(`http://localhost:5000/favourite/${userid}`)
+        .then((res) => {
+          if(res.data.length > 0) {
+            setFavList(res.data)
+          }else{
+            setFavList([]);
+          }
+        })
+        .catch(error => setError(error));
       }
     };
 
-    useEffect(()=>{
-      fetchFavList()
-    },[visible])
+    // useEffect(()=>{
+    //   fetchFavList()
+    // },[visible])
   
-    const fetchFavList = async() =>{
-      const config = {
-        headers: {
-            "Content-type": "application/json",
-        },
-      };
+    // const fetchFavList = async() =>{
+    //   const config = {
+    //     headers: {
+    //         "Content-type": "application/json",
+    //     },
+    //   };
   
-      await axios.get('http://localhost:5000/favourite',config)
-      .then((res) => {
-        if(res.data.length > 0) {
-          setFavList(res.data)
-        }else{
-          setFavList([]);
-        }
-      })
-      .catch(error => setError(error));
-    }
+    //   await axios.get('http://localhost:5000/favourite',userid,config)
+    //   .then((res) => {
+    //     if(res.data.length > 0) {
+    //       setFavList(res.data)
+    //     }else{
+    //       setFavList([]);
+    //     }
+    //   })
+    //   .catch(error => setError(error));
+    // }
 
     const removeFavourite = async(userid, recipeID) => {
       console.log(userid+ " 123 " + recipeID);
@@ -147,7 +159,7 @@ function Favourite() {
                           })}  
                           </CardText>
                           <div style={{margin:"20px 0 10px 0"}}>
-                            <Button color="success" onClick={()=>toggleModal(user._id, food.recipeID, food.recipeName)}>Update</Button>
+                            <Button color="success" onClick={()=>toggleModal(food._id, user._id, food.recipeID, food.recipeName)}>Update</Button>
                             <Button color="warning" className="delete-search" onClick={()=>removeFavourite(user._id, food.recipeID)}>Remove</Button>
                           </div>
                         </CardBody>

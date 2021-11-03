@@ -32,6 +32,7 @@ function App() {
     }else{
       let user = JSON.parse(localStorage.getItem('userinfo'));
       setLoginUser(user);
+      console.log(user)
     }
   };
 
@@ -75,14 +76,14 @@ function App() {
             path="/profile" exact
           >
           {
-            user && user._id ? <Profile user={user}/> : <Login user={user}/>
+            user ? <Profile user={user}/> : <Login user={user}/>
           }
           </Route>
           <Route 
             path="/favourite" exact
           >
           {
-            user && user._id ? <Favourite user={user}/> : <Login user={user}/>
+            user ? <Favourite user={user}/> : <Login user={user}/>
           }
           </Route>
         </Switch>

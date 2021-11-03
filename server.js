@@ -185,16 +185,16 @@ app.post('/removefav',(req, res)=>{
     .catch(err => res.status(400).json(`Error: ${err}`))
 })
 
-app.get('/favourite',(req,res)=>{
-    Favourite.find().sort({createdAt: -1})
+app.get('/favourite/:id',(req,res)=>{
+    console.log(req.params.id);
+    Favourite.find({"userID": req.params.id}).sort({createdAt: -1})
     .then(food => res.json(food))
     .catch(err => res.status(400).json(`Error: ${err}`));
 });
 
-app.put("/favourite/update", (req, res)=>{
-    console.log(req.body.userid+" "+ req.body.recipeID+" "+ req.body.recipeTitle)
-    Favourite.findOneAndUpdate({"userID":req.body.userid}, {"recipeID": req.body.recipeID},{
-        "recipeName": req.body.recipeTitle
+app.put("/favourite/:id", (req, res)=>{
+    Favourite.findOneAndUpdate( {_id: req.params.id},{
+        recipeName: req.body.recipeTitle
     })
     .then(food => {
         res.json("The menu is updated successfully")

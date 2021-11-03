@@ -40,6 +40,7 @@ function SignUp() {
 
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
+    const history = useHistory();
 
     const createAccount = async(e) => {
         e.preventDefault();
@@ -60,6 +61,7 @@ function SignUp() {
                 const { data } = await axios.post("/register", {signUpName, signUpEmail, signUpPass, signUpRePass} , config);
 
                 setError("");
+                history.push("/login");
 
             } catch (error) {
                 setError(error.response.data);
