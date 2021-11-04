@@ -43,13 +43,19 @@ function SingleRecipe(props) {
                 setLoginUser([]);
             }else{
                 let user = await JSON.parse(localStorage.getItem('userinfo'));
+                let recipe = await JSON.parse(localStorage.getItem('recipeinfo'))[recipeID];
+
                 setLoginUser(user);
                 setID(user._id);
+
                 let userid = user._id;
-                await axios.post(`/favourited`,{userid, recipeID})
+                let rectitle = recipe.recipeName;
+                
+                //retrieve from mongodb to check the recipe is saved or not
+                await axios.post(`/favourited`,{userid,rectitle})
                 .then((res) => {
                     if(res.data.success){
-                        setFavorited(res.data.favorited);
+                        setFavorited(res.data.favorited); //change favourite button when the menu is existed in favourite
                     }
                 })
                 .catch((err)=>{
@@ -57,7 +63,6 @@ function SingleRecipe(props) {
                 })
             }
         }
-
         fetchUser()
     },[]);
 
@@ -70,7 +75,6 @@ function SingleRecipe(props) {
             localStorage.setItem('recipeinfo',JSON.stringify([]));
         }else{
             let recipe = await JSON.parse(localStorage.getItem('recipeinfo'))[recipeID];
-            //setFoodList(recipe);
             setRecTitle(recipe.recipeName)
             setRecImg(recipe.recipeImage) 
             setRecIng(recipe.recipeIngredient)
@@ -83,14 +87,14 @@ function SingleRecipe(props) {
         if(userid != null){
             if(favor === true){
                 //remove from favourite db
-                await axios.post("/removefav",{userid,recipeID})
+                await axios.post("/removefav",{userid,recTitle})
                 .then((res) => {
                     setFavorited(false);
                     setVisible(true);
                 })
                 .catch(err => console.log(err));
             }else{
-                await axios.post(`/recipe/${recipeID}`, {userid, recTitle, recImg, recIng, recMeal, recDish})
+                await axios.post(`/recipe/${recTitle}`, {userid, recTitle, recImg, recIng, recMeal, recDish})
                 .then((res) => {
                     console.log("Added to Favourite")
                     setFavorited(true); //change button colour

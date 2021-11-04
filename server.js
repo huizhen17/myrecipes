@@ -206,7 +206,7 @@ app.post('/recipe/:id', (req, res)=>{
 
 //Find the favourite data that match with the user ID and recipe ID
 app.post('/favourited', (req, res)=>{
-    Favourite.find({"userID":req.body.userid, "recipeID": req.body.recipeID})
+    Favourite.find({"userID":req.body.userid, "recipeID": req.body.rectitle})
     .then(favourite => {
         let result = false;
         if(favourite.length !== 0){
@@ -219,7 +219,7 @@ app.post('/favourited', (req, res)=>{
 
 //Delete Favoruite 
 app.post('/removefav',(req, res)=>{
-    Favourite.findOneAndDelete({"userID":req.body.userid, "recipeID": req.body.recipeID})
+    Favourite.findOneAndDelete({"userID":req.body.userid, "recipeID": req.body.recTitle})
     .then(() => res.send("The menu is deleted from your favourite"))
     .catch(err => res.status(400).json(`Error: ${err}`))
 })
