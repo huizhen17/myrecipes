@@ -3,6 +3,7 @@ const axios = require('axios');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const path = require("path");
 const verify = require('./routes/verifyJWToken');
 
 const User = require('./models/user.js');
@@ -207,5 +208,12 @@ app.put("/favourite/:id", (req, res)=>{
     })
     .catch(err => res.status(400).json(`Error: ${err}`))
 })
+
+app.use(express.static(path.join(__dirname, "/client/build")));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
+});
+
 
 app.listen(port, ()=>console.log(`App is running on Port: ${port}`));

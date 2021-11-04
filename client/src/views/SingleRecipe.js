@@ -1,4 +1,4 @@
-import axios from 'axios';
+
 import React, { useEffect, useState } from 'react';
 import HomeNavbar from '../components/HomeNavbar';
 
@@ -11,6 +11,7 @@ import {
     Alert
   } from 'reactstrap';
 import { useHistory } from 'react-router-dom';
+import { axiosInstance } from '../config';
 
 function SingleRecipe(props) {
 
@@ -52,7 +53,7 @@ function SingleRecipe(props) {
                 let rectitle = recipe.recipeName;
                 
                 //retrieve from mongodb to check the recipe is saved or not
-                await axios.post(`/favourited`,{userid,rectitle})
+                await axiosInstance.post(`/favourited`,{userid,rectitle})
                 .then((res) => {
                     if(res.data.success){
                         setFavorited(res.data.favorited); //change favourite button when the menu is existed in favourite
@@ -87,14 +88,14 @@ function SingleRecipe(props) {
         if(userid != null){
             if(favor === true){
                 //remove from favourite db
-                await axios.post("/removefav",{userid,recTitle})
+                await axiosInstance.post("/removefav",{userid,recTitle})
                 .then((res) => {
                     setFavorited(false);
                     setVisible(true);
                 })
                 .catch(err => console.log(err));
             }else{
-                await axios.post(`/recipe/${recTitle}`, {userid, recTitle, recImg, recIng, recMeal, recDish})
+                await axiosInstance.post(`/recipe/${recTitle}`, {userid, recTitle, recImg, recIng, recMeal, recDish})
                 .then((res) => {
                     console.log("Added to Favourite")
                     setFavorited(true); //change button colour

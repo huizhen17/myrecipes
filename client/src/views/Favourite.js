@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 import {
@@ -23,6 +22,7 @@ import {
   Label
 } from "reactstrap";
 import HomeNavbar from '../components/HomeNavbar';
+import { axiosInstance } from '../config';
 
 function Favourite() {
     const [user, setLoginUser] = useState({});
@@ -55,7 +55,7 @@ function Favourite() {
     };
 
     const updateMenu = async() => {
-      await axios.put(`/favourite/${id}`,{userid, recipeID, recipeTitle})
+      await axiosInstance.put(`/favourite/${id}`,{userid, recipeID, recipeTitle})
       .then(res => {
         console.log(res.data)
         
@@ -76,7 +76,7 @@ function Favourite() {
         let user = await JSON.parse(localStorage.getItem('userinfo'));
         var userid = user._id;
         setLoginUser(user);
-        await axios.get(`http://localhost:5000/favourite/${userid}`)
+        await axiosInstance.get(`http://localhost:5000/favourite/${userid}`)
         .then((res) => {
           if(res.data.length > 0) {
             setFavList(res.data)
@@ -89,7 +89,7 @@ function Favourite() {
     };
 
     const removeFavourite = async() => {
-      await axios.post(`/removefav/`,{userid,recipeID})
+      await axiosInstance.post(`/removefav/`,{userid,recipeID})
       .then((res) => {
           setVisible(true);
           setDelModal(false)

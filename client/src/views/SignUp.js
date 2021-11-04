@@ -1,4 +1,4 @@
-import axios from 'axios';
+
 import React, {useState} from 'react'
 import { Link, useHistory } from 'react-router-dom';
 
@@ -18,6 +18,7 @@ import {
     InputGroupText,
     Alert
 } from "reactstrap";
+import { axiosInstance } from '../config';
 
 function SignUp() {
 
@@ -58,7 +59,7 @@ function SignUp() {
                     },
                 };
 
-                const { data } = await axios.post("/register", {signUpName, signUpEmail, signUpPass, signUpRePass} , config);
+                const { data } = await axiosInstance.post("/register", {signUpName, signUpEmail, signUpPass, signUpRePass} , config);
 
                 setError("");
                 history.push("/login");

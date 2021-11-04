@@ -1,6 +1,6 @@
 //import '/assets/App.css';
 import React, {useState , useEffect, useRef} from 'react';
-import axios from 'axios';
+import {axiosInstance} from '../config';
 import {
   Form,
   InputGroup,
@@ -44,7 +44,7 @@ function Homepage() {
 
     const searchQuery = {search}
 
-    await axios.post("/search",searchQuery)
+    await axiosInstance.post("/search",searchQuery)
     .then((res) => {
         setError(null);
         if(res.data.length > 0) {

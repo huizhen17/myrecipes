@@ -1,4 +1,4 @@
-import axios from 'axios';
+
 import React, {useState} from 'react'
 import { Link, useHistory } from 'react-router-dom';
 
@@ -18,6 +18,7 @@ import {
     InputGroup,
     Alert
 } from "reactstrap";
+import { axiosInstance } from '../config';
 
 function Login() {
 
@@ -45,7 +46,7 @@ function Login() {
                 },
             };
 
-            await axios.post("/login", {loginEmail, loginPass} , config)
+            await axiosInstance.post("/login", {loginEmail, loginPass} , config)
             .then((res)=>{
                 //setLoginUser(res.data);
                 localStorage.setItem("userinfo", JSON.stringify(res.data));
