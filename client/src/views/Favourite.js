@@ -48,9 +48,9 @@ function Favourite() {
       setModal(!modal);
     };
 
-    const toggleDelModal = (userID, recipeID) => {
+    const toggleDelModal = (userID, recipeName) => {
       setUserID(userID);
-      setRecipeID(recipeID);
+      setRecipeID(recipeName);
       setDelModal(!delModal);
     };
 
@@ -89,7 +89,8 @@ function Favourite() {
     };
 
     const removeFavourite = async() => {
-      await axiosInstance.post(`/removefav/`,{userid,recipeID})
+      console.log(recipeID)
+      await axiosInstance.post(`/removefav`,{userid,recipeID})
       .then((res) => {
           setVisible(true);
           setDelModal(false)
@@ -143,7 +144,7 @@ function Favourite() {
                           </CardText>
                           <div style={{margin:"20px 0 10px 0"}}>
                             <Button color="success" onClick={()=>toggleModal(food._id, user._id, food.recipeID, food.recipeName)}>Update</Button>
-                            <Button color="warning" className="delete-search" onClick={()=>toggleDelModal(user._id, food.recipeID)}>Remove</Button>
+                            <Button color="warning" className="delete-search" onClick={()=>toggleDelModal(user._id, food.recipeName)}>Remove</Button>
                           </div>
                         </CardBody>
                       </Card>
