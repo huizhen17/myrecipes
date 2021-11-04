@@ -293,6 +293,10 @@ a:hover{
 }
 
 /*    Modal     */
+.no-padding{
+  padding: 0 !important;
+}
+
 .modal-dialog {
   padding-top: 60px;
 }

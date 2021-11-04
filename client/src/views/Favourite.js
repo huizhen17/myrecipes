@@ -30,6 +30,7 @@ function Favourite() {
     const [error, setError] = useState("");
     const [visible, setVisible] = useState(false);
     const [modal, setModal] = useState(false);
+    const [delModal, setDelModal] = useState(false);
     const [id, setID] = useState("");
     const [userid, setUserID] = useState("");
     const [recipeID, setRecipeID] = useState("");
@@ -44,8 +45,13 @@ function Favourite() {
       setRecipeID(recipeID);
       setRecipeTitle(recipeTitle);
       setID(id);
-      console.log(id)
       setModal(!modal);
+    };
+
+    const toggleDelModal = (userID, recipeID) => {
+      setUserID(userID);
+      setRecipeID(recipeID);
+      setDelModal(!delModal);
     };
 
     const updateMenu = async() => {
@@ -104,11 +110,12 @@ function Favourite() {
     //   .catch(error => setError(error));
     // }
 
-    const removeFavourite = async(userid, recipeID) => {
-      console.log(userid+ " 123 " + recipeID);
-      await axios.post("/removefav",{userid,recipeID})
+
+    const removeFavourite = async() => {
+      await axios.post(`/removefav/`,{userid,recipeID})
       .then((res) => {
           setVisible(true);
+          setDelModal(false)
       })
       .catch(err => console.log(err));
     }
@@ -160,7 +167,7 @@ function Favourite() {
                           </CardText>
                           <div style={{margin:"20px 0 10px 0"}}>
                             <Button color="success" onClick={()=>toggleModal(food._id, user._id, food.recipeID, food.recipeName)}>Update</Button>
-                            <Button color="warning" className="delete-search" onClick={()=>removeFavourite(user._id, food.recipeID)}>Remove</Button>
+                            <Button color="warning" className="delete-search" onClick={()=>toggleDelModal(user._id, food.recipeID)}>Remove</Button>
                           </div>
                         </CardBody>
                       </Card>
@@ -199,6 +206,40 @@ function Favourite() {
                   Update
                 </Button>
               </ModalFooter>
+          </Modal>    
+          {/*Modal*/}
+          <Modal
+              className="modal-mini modal-primary"
+              isOpen={delModal}
+              toggle={toggleDelModal}
+            >
+              <ModalBody className="text-center justify-content-center">
+                  <i className="fa fa-lightbulb-o modal-profile" aria-hidden="true"></i>
+                  <h5 className="small-title" style={{fontWeight:"400"}}>Delete this menu from Favourite?</h5>
+              </ModalBody>
+              <div className="modal-footer no-padding">
+                  <div className="custom-left-side">
+                    <Button
+                      className="btn-link"
+                      color="default"
+                      type="button"
+                      onClick={toggleDelModal}
+                      >
+                        Cancel
+                    </Button>
+                  </div>
+                  <div className="divider" />
+                  <div className="custom-right-side">
+                    <Button 
+                      className="btn-link btn-modal-delete" 
+                      color="default" 
+                      type="button"                      
+                      onClick={removeFavourite}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+              </div>
           </Modal>    
           </Container>
         </div>

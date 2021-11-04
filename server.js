@@ -32,6 +32,7 @@ app.get('/',(req,res)=>{
     .catch(err => res.status(400).json(`Error: ${err}`));
 });
 
+//Perform Register
 app.post('/register',async (req,res)=>{
 
     //Checking if user email is already in the database
@@ -61,6 +62,7 @@ app.post('/register',async (req,res)=>{
     }
 });
 
+//Perform Login
 app.post('/login', async(req, res)=>{
 
     const user = await User.findOne({email: req.body.loginEmail});
@@ -86,7 +88,6 @@ app.post('/login', async(req, res)=>{
         email: user.email,
         token: token
     });
-    //res.send("Success");
 });
 
 //Request to search for a food and add to MongoDb
@@ -119,7 +120,7 @@ app.post('/search',(req,res)=>{
             });
         
             foodValue.save().then(result=> {
-                console.log("Success" + result);
+                console.log("Success");
             })
             .catch (error=> {
                 console.log("Error" + error);
@@ -133,8 +134,6 @@ app.post('/search',(req,res)=>{
         console.log("Error" + error);
         res.status(400).send(`Sorry we can't find what you want..`);
     }); 
-
-    //console.log("Hello");
 })
 
 //Get Specific Menu from ID
@@ -144,7 +143,7 @@ app.get('/recipe/:id', (req, res)=>{
     .catch(err => res.status(400).json(`Error ${err}`));
 })
 
-//Store recipe into favourite
+//Store recipe into favourite collection
 app.post('/recipe/:id', (req, res)=>{
     //store into new schema
     favValue = new Favourite ({
@@ -165,8 +164,8 @@ app.post('/recipe/:id', (req, res)=>{
     }); 
 })
 
+//Find the favourite data that match with the user ID and recipe ID
 app.post('/favourited', (req, res)=>{
-    //console.log(req.body.userid + "  " + req.body.recipeID)
     Favourite.find({"userID":req.body.userid, "recipeID": req.body.recipeID})
     .then(favourite => {
         let result = false;
@@ -178,20 +177,21 @@ app.post('/favourited', (req, res)=>{
     .catch(err => res.status(400).json(`Error: ${err}`))
 })
 
-//Delete Recipe By ID
+//Delete Favoruite 
 app.post('/removefav',(req, res)=>{
     Favourite.findOneAndDelete({"userID":req.body.userid, "recipeID": req.body.recipeID})
     .then(() => res.send("The menu is deleted from your favourite"))
     .catch(err => res.status(400).json(`Error: ${err}`))
 })
 
+//Get all favourites that match with User ID and sort based on the date
 app.get('/favourite/:id',(req,res)=>{
-    console.log(req.params.id);
     Favourite.find({"userID": req.params.id}).sort({createdAt: -1})
     .then(food => res.json(food))
     .catch(err => res.status(400).json(`Error: ${err}`));
 });
 
+//Update the favourite based on the favourite ID
 app.put("/favourite/:id", (req, res)=>{
     Favourite.findOneAndUpdate( {_id: req.params.id},{
         recipeName: req.body.recipeTitle

@@ -52,12 +52,13 @@ function Homepage() {
 
     await axios.post("/search",searchQuery)
     .then((res) => {
-        console.log(res.data)
+        setError(null);
         //window.location.reload(false);
     })
     .catch((err)=>{
       setError(err.response.data);
     })
+    
     
     setSearch('');
   }

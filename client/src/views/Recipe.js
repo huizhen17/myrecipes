@@ -92,7 +92,7 @@ function Recipe({foodList}) {
                   <i className="fa fa-lightbulb-o modal-profile" aria-hidden="true"></i>
                   <h5 className="small-title" style={{fontWeight:"400"}}>Delete this history?</h5>
               </ModalBody>
-              <div className="modal-footer">
+              <div className="modal-footer no-padding">
                   <div className="custom-left-side">
                     <Button
                       className="btn-link"
