@@ -1,6 +1,5 @@
 //import '/assets/App.css';
-import axios from 'axios';
-import React, { useState } from 'react';
+import React from 'react';
 import {Link} from "react-router-dom";
 
 import {
@@ -14,28 +13,10 @@ import {
   CardSubtitle,
   CardBody,
   List,
-  ListInlineItem,
-  Modal,
-  ModalBody
+  ListInlineItem
 } from 'reactstrap';
 
 function Recipe({foodList}) {
-
-  const [modal, setModal] = useState(false);
-  const [recipe, setRecipe] = useState("");
-
-  const toggleModal = (e) => {
-    setRecipe(e);
-    setModal(!modal);
-  };
-
-  const deleteRecipe = () => {
-    axios.delete(`/${recipe}`)
-    .then((res) => {
-      window.location.reload(false);
-    })
-    .catch(err => console.log(err));
-  }
 
   return (
     <div className="section">
@@ -52,11 +33,13 @@ function Recipe({foodList}) {
               foodList.map((food, key)=>{
                 return(
                 <>
-                    <Col className="search-row-container" lg="4">
-                      <Card key={key}>
-                        <CardImg top width="100%" draggable="false" src={food.recipeImage === null ? require("../assets/img/menu_placeholder.png").default : food.recipeImage } alt="Card image cap" />
+                    <Col className="search-row-container" lg="4" key={key}>
+                      <Card>
+                        <Link to={`/recipe/${key}`}>
+                          <CardImg top width="100%" draggable="false" src={food.recipeImage === null ? require("../assets/img/menu_placeholder.png").default : food.recipeImage } alt="Card image cap" />
+                        </Link>
                         <CardBody>
-                          <Link to={`/recipe/${food._id}`}>
+                          <Link to={`/recipe/${key}`}>
                             <CardTitle tag="h5" className="small-title pointer">{food.recipeName}</CardTitle>
                           </Link>
                           <CardSubtitle tag="h6" className="mb-2 text-muted default">{food.foodTitle} | {food.foodAisle}</CardSubtitle>
@@ -70,10 +53,10 @@ function Recipe({foodList}) {
                             </List>                         
                           </div>
                           <div style={{margin:"20px 0 10px 0"}}>
-                          <Link to={`/recipe/${food._id}`}>
+                          <Link to={`/recipe/${key}`}>
                             <Button color="success">View More</Button>
                           </Link>
-                          <Button color="danger" onClick={()=>toggleModal(`${food._id}`)} className="delete-search">Delete</Button>
+                          {/* <Button color="danger" onClick={()=>toggleModal(`${food._id}`)} className="delete-search">Delete</Button> */}
                           </div>
                         </CardBody>
                       </Card>
@@ -81,41 +64,7 @@ function Recipe({foodList}) {
                 </>
                 )
             })}                    
-            </Row>
-            {/*Modal*/}
-            <Modal
-              className="modal-mini modal-primary"
-              isOpen={modal}
-              toggle={toggleModal}
-            >
-              <ModalBody className="text-center justify-content-center">
-                  <i className="fa fa-lightbulb-o modal-profile" aria-hidden="true"></i>
-                  <h5 className="small-title" style={{fontWeight:"400"}}>Delete this history?</h5>
-              </ModalBody>
-              <div className="modal-footer no-padding">
-                  <div className="custom-left-side">
-                    <Button
-                      className="btn-link"
-                      color="default"
-                      type="button"
-                      onClick={toggleModal}
-                      >
-                        Cancel
-                    </Button>
-                  </div>
-                  <div className="divider" />
-                  <div className="custom-right-side">
-                    <Button 
-                      className="btn-link btn-modal-delete" 
-                      color="default" 
-                      type="button"                      
-                      onClick={deleteRecipe}
-                    >
-                      Delete
-                    </Button>
-                  </div>
-              </div>
-          </Modal>    
+            </Row> 
         </div>
       </Container>
     </div>

@@ -46,6 +46,7 @@ const HomeNavbar = ({user}) => {
 
     const logOut = () => {
         localStorage.removeItem("userinfo");
+        localStorage.removeItem("recipeinfo");
         history.push('/');
         window.location.reload(false);
     }

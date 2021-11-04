@@ -23,14 +23,15 @@ const apikey = process.env.SPOONACULAR_API_KEY;
 const recApiKey = process.env.EDAMAN_API_KEY;
 
 var foodUnit, foodAisle, recName, recImage, recIngredient, recMeal, recDish;
+var foodList = [];
 
 //Routes
 //Get back all history data from MongoDb 
-app.get('/',(req,res)=>{
-    Food.find().sort({createdAt: -1})
-    .then(food => res.json(food))
-    .catch(err => res.status(400).json(`Error: ${err}`));
-});
+// app.get('/',(req,res)=>{
+//     Food.find().sort({createdAt: -1})
+//     .then(food => res.json(food))
+//     .catch(err => res.status(400).json(`Error: ${err}`));
+// });
 
 //Perform Register
 app.post('/register',async (req,res)=>{
@@ -93,6 +94,8 @@ app.post('/login', async(req, res)=>{
 //Request to search for a food and add to MongoDb
 app.post('/search',(req,res)=>{
     
+    foodList = []; //clear previous data 
+
     const foodName = req.body.search
     const queryStr = `https://api.spoonacular.com/food/ingredients/search?apiKey=${apikey}&query=${foodName}&number=1&metaInformation=true`
     const queryRec = `https://api.edamam.com/search?q=${foodName}&app_id=ceafc23b&app_key=${recApiKey}`;
@@ -102,31 +105,68 @@ app.post('/search',(req,res)=>{
         foodAisle = response.data.results[0].aisle
 
         axios.get(queryRec).then((response)=>{
-            recName = response.data.hits[0].recipe.label;
-            recImage = response.data.hits[0].recipe.image;
-            recIngredient = response.data.hits[0].recipe.ingredientLines;
-            recMeal = response.data.hits[0].recipe.mealType[0]
-            recDish = response.data.hits[0].recipe.dishType[0]
+            for(var i = 0; i < response.data.hits.length ; i++){
+                //check if property exists
+                if(response.data.hits[i].recipe.hasOwnProperty('label')){
+                    recName = response.data.hits[i].recipe.label;
+                }else{
+                    recName = "";
+                }
+                if(response.data.hits[i].recipe.hasOwnProperty('image')){
+                    recImage = response.data.hits[i].recipe.image
+                }else{
+                    recImage = "";
+                }
+                if(response.data.hits[i].recipe.hasOwnProperty('ingredientLines')){
+                    recIngredient = response.data.hits[i].recipe.ingredientLines 
+                }else{
+                    recIngredient = "";
+                }
+                if(response.data.hits[i].recipe.hasOwnProperty('mealType')){
+                    recMeal = response.data.hits[i].recipe.mealType[0]
+                }else{
+                    recMeal = "";
+                }
+                if(response.data.hits[i].recipe.hasOwnProperty('dishType')){
+                    recDish = response.data.hits[i].recipe.dishType[0]
+                }else{
+                    recDish = "";
+                }
 
-            foodValue = new Food ({
-                foodTitle: foodName,
-                foodAisle: foodAisle,
-                foodUnit: foodUnit,
-                recipeName: recName,
-                recipeImage: recImage,
-                recipeIngredient: recIngredient,
-                recipeMealType: recMeal,
-                recipeDishType: recDish
-            });
+                var singleFood = {
+                    foodTitle: foodName,
+                    foodAisle: foodAisle,
+                    foodUnit: foodUnit,
+                    recipeName: recName,
+                    recipeImage: recImage,
+                    recipeIngredient: recIngredient,
+                    recipeMealType: recMeal,
+                    recipeDishType: recDish
+                };
+
+                foodList.push(singleFood) //store in array
+            }
+
+            
+            // foodValue = new Food ({
+            //     foodTitle: foodName,
+            //     foodAisle: foodAisle,
+            //     foodUnit: foodUnit,
+            //     recipeName: recName,
+            //     recipeImage: recImage,
+            //     recipeIngredient: recIngredient,
+            //     recipeMealType: recMeal,
+            //     recipeDishType: recDish
+            // });
         
-            foodValue.save().then(result=> {
-                console.log("Success");
-            })
-            .catch (error=> {
-                console.log("Error" + error);
-            }); 
+            // foodValue.save().then(result=> {
+            //     console.log("Success");
+            // })
+            // .catch (error=> {
+            //     console.log("Error" + error);
+            // }); 
 
-            res.send("Success")
+            res.json(foodList)
         })
 
     })
@@ -136,12 +176,12 @@ app.post('/search',(req,res)=>{
     }); 
 })
 
-//Get Specific Menu from ID
-app.get('/recipe/:id', (req, res)=>{
-    Food.findById(req.params.id)
-    .then(food => res.json(food))
-    .catch(err => res.status(400).json(`Error ${err}`));
-})
+// //Get Specific Menu from ID
+// app.get('/recipe/:id', (req, res)=>{
+//     Food.findById(req.params.id)
+//     .then(food => res.json(food))
+//     .catch(err => res.status(400).json(`Error ${err}`));
+// })
 
 //Store recipe into favourite collection
 app.post('/recipe/:id', (req, res)=>{
@@ -186,7 +226,7 @@ app.post('/removefav',(req, res)=>{
 
 //Get all favourites that match with User ID and sort based on the date
 app.get('/favourite/:id',(req,res)=>{
-    Favourite.find({"userID": req.params.id}).sort({createdAt: -1})
+    Favourite.find({"userID": req.params.id}).sort({updatedAt: -1})
     .then(food => res.json(food))
     .catch(err => res.status(400).json(`Error: ${err}`));
 });
@@ -203,10 +243,10 @@ app.put("/favourite/:id", (req, res)=>{
 })
 
 //Delete Recipe By ID
-app.delete('/:id',(req, res)=>{
-    Food.findByIdAndDelete(req.params.id)
-    .then(() => res.send("The menu is deleted"))
-    .catch(err => res.status(400).json(`Error: ${err}`))
-})
+// app.delete('/:id',(req, res)=>{
+//     Food.findByIdAndDelete(req.params.id)
+//     .then(() => res.send("The menu is deleted"))
+//     .catch(err => res.status(400).json(`Error: ${err}`))
+// })
 
 app.listen(port, ()=>console.log(`App is running on Port: ${port}`));

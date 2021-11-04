@@ -1,5 +1,5 @@
 //import '/assets/App.css';
-import React, {useState , useEffect} from 'react';
+import React, {useState , useEffect, useRef} from 'react';
 import axios from 'axios';
 import {
   Form,
@@ -19,33 +19,49 @@ function Homepage() {
   const [foodList, setFoodList] = useState([]);
   const [error, setError] = useState(null);
 
-  useEffect(()=>{
-    fetchFoodList()
-  },[search])
+  const titleRef = useRef(null)
 
-  const fetchFoodList = async() =>{
-    const config = {
-      headers: {
-          "Content-type": "application/json",
-      },
-    };
+  // useEffect(()=>{
+  //   fetchFoodList()
+  // },[search])
 
-    await axios.get('http://localhost:5000/',config)
-    .then((res) => {
-      if(res.data.length > 0) {
-        setFoodList(res.data)
-      }else{
-        setFoodList([]);
-      }
-    })
-    .catch(error => console.log(error));
-  }
+  // const fetchFoodList = async() =>{
+  //   const config = {
+  //     headers: {
+  //         "Content-type": "application/json",
+  //     },
+  //   };
+
+  //   await axios.get('http://localhost:5000/',config)
+  //   .then((res) => {
+  //     if(res.data.length > 0) {
+  //       setFoodList(res.data)
+  //     }else{
+  //       setFoodList([]);
+  //     }
+  //   })
+  //   .catch(error => console.log(error));
+  // }
+
+  useEffect(() => {
+    getLocalRecipe();
+  },[search]);
+
+  const getLocalRecipe = async() => {
+    if(localStorage.getItem('recipeinfo') === null){
+      localStorage.setItem('recipeinfo',JSON.stringify([]));
+    }else{
+      let recipe = await JSON.parse(localStorage.getItem('recipeinfo'));
+      setFoodList(recipe);
+    }
+  };
 
   const updateSearch = e => {
     setSearch(e.target.value); 
   };
 
   const handleSearch = async(e) => {
+    
     e.preventDefault()
 
     const searchQuery = {search}
@@ -53,12 +69,19 @@ function Homepage() {
     await axios.post("/search",searchQuery)
     .then((res) => {
         setError(null);
+        if(res.data.length > 0) {
+          setFoodList(res.data)
+          localStorage.setItem("recipeinfo", JSON.stringify(res.data));
+          window.scrollTo({top: titleRef.current.offsetTop, behavior: "smooth"})
+        }else{
+          setFoodList([]);
+        }
         //window.location.reload(false);
     })
     .catch((err)=>{
       setError(err.response.data);
+      localStorage.setItem('recipeinfo',JSON.stringify([]));
     })
-    
     
     setSearch('');
   }
@@ -69,12 +92,12 @@ function Homepage() {
     getLocalUsers();
   },[]);
 
-  const getLocalUsers = () => {
+  const getLocalUsers = async() => {
     if(localStorage.getItem('userinfo') === null){
       localStorage.setItem('userinfo',JSON.stringify([]));
       setLoginUser([]);
     }else{
-      let user = JSON.parse(localStorage.getItem('userinfo'));
+      let user = await JSON.parse(localStorage.getItem('userinfo'));
       setLoginUser(user);
     }
   };
@@ -108,8 +131,10 @@ function Homepage() {
             <i className="fa fa-exclamation-circle error-icon"/>{error}
           </p>
         </Container>
-      </div>        
-      <Recipe foodList={foodList}/>
+      </div> 
+      <div ref={titleRef}>
+        <Recipe foodList={foodList}/>
+      </div>       
     </div>
     <footer className="footer footer-black footer-white">
         <Container>

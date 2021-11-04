@@ -30,6 +30,8 @@ function SingleRecipe(props) {
 
     const history = useHistory();
 
+    window.scrollTo(0, 0);
+
     window.setTimeout(() => { 
         setVisible(false);
     }, 6000);
@@ -59,19 +61,23 @@ function SingleRecipe(props) {
         fetchUser()
     },[]);
 
-    useEffect(async()=>{
-        await axios.get(`/recipe/${props.match.params.id}`)
-        .then((res) => {
-            setRecTitle(res.data.recipeName);
-            setRecImg(res.data.recipeImage);
-            setRecIng(res.data.recipeIngredient);
-            setRecMeal(res.data.recipeMealType);
-            setRecDish(res.data.recipeDishType);
-        })
-        .catch((err)=>{
-            setError(err.response.data);
-        })
-    },[])
+    useEffect(() => {
+        getLocalRecipe();
+    },[]);
+
+    const getLocalRecipe = async() => {
+        if(localStorage.getItem('recipeinfo') === null){
+            localStorage.setItem('recipeinfo',JSON.stringify([]));
+        }else{
+            let recipe = await JSON.parse(localStorage.getItem('recipeinfo'))[recipeID];
+            //setFoodList(recipe);
+            setRecTitle(recipe.recipeName)
+            setRecImg(recipe.recipeImage) 
+            setRecIng(recipe.recipeIngredient)
+            setRecMeal(recipe.recipeMealType)
+            setRecDish(recipe.recipeDishType)
+        }
+    };
     
     const addFavourite = async(userid,favor) => {
         if(userid != null){
@@ -105,7 +111,10 @@ function SingleRecipe(props) {
         <HomeNavbar user={user}/>
         <div className="main-section">
             <Container>
-                {error && <h3>{error}</h3>}
+                {error && <h3>{error}</h3>} 
+                <Alert className="alert-fav" color="warning" isOpen={visible} style={{zIndex:"999"}}>
+                    <i class="fa fa-info-circle" aria-hidden="true"></i> Successfully remove from favourite!
+                </Alert>
                 <Row>
                     <Col>
                         <img className="single-recipe-image"  src={recImg === null ? require("../assets/img/menu_placeholder.png").default : recImg } alt="Food"/>
@@ -120,14 +129,14 @@ function SingleRecipe(props) {
                                     <div className="text-center recipe-type">
                                         <h5 className="small-title">Meal Type</h5>
                                         <img className="recipe-icon" draggable="false" src={require("../assets/img/breakfast.png").default} alt="meal-icon" />
-                                        <p className="meal-type-text">{recMeal}</p>
+                                        <p className="meal-type-text">{recMeal ? recMeal : <i>Data not available.</i>}</p>
                                     </div>
                                 </Col>
                                 <Col>
                                     <div className="text-center recipe-type">
                                         <h5 className="small-title">Dish Type</h5>
                                         <img className="recipe-icon" draggable="false" src={require("../assets/img/serving.png").default} alt="serve-icon" />
-                                        <p className="dish-type-text">{recDish}</p>
+                                        <p className="dish-type-text">{recDish ? recDish : <i>Data not available.</i>}</p>
                                     </div>
                                 </Col>
                             </Row>
@@ -136,7 +145,9 @@ function SingleRecipe(props) {
                             <h5 className="title">Ingredients</h5>
                             <Table bordered>
                                 <tbody>
-                                    {recIng.map((ingredient,key)=>{
+                                    {recIng.length ===0 ?
+                                        <p><i>Data not available. :(</i></p>
+                                    : recIng.map((ingredient,key)=>{
                                         return (
                                             <tr key={key}>
                                                 <th scope="row">{key+1}</th>
@@ -151,22 +162,19 @@ function SingleRecipe(props) {
                             {favorited ? "Remove from Favourite" : "Add to Favourite" }
                         </Button>
                     </Col>
-                    <Alert className="alert-fav" color="warning" isOpen={visible}>
-                        <i class="fa fa-info-circle" aria-hidden="true"></i> Successfully remove from favourite!
-                    </Alert>
                 </Row>
             </Container>
         </div>
         
-    <footer className="footer footer-black footer-white">
-        <Container>
-            <div className="credits ml-auto text-center">
-                <span className="copyright">
-                    © {new Date().getFullYear()} powered by{" "}Spoonacular and Edaman
-                </span>
-            </div>
-        </Container>
-    </footer>
+        <footer className="footer footer-black footer-white">
+            <Container>
+                <div className="credits ml-auto text-center">
+                    <span className="copyright">
+                        © {new Date().getFullYear()} powered by{" "}Spoonacular and Edaman
+                    </span>
+                </div>
+            </Container>
+        </footer>
         </>
     )
 }

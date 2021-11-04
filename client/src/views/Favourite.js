@@ -125,11 +125,10 @@ function Favourite() {
         <HomeNavbar user={user}/>
         <div className="main-section">
           <Container>
-            <Alert className="alert-fav" color="warning" isOpen={visible}>
+            <Alert className="alert-fav" color="warning" style={{zIndex:"9999"}} isOpen={visible}>
               <i class="fa fa-info-circle" aria-hidden="true"></i> Successfully remove from favourite!
             </Alert>
             <h3 className="title text-center">My Favourite</h3>
-            {console.log(favList)}
             <Row>
             {favList.length === 0 ?
               <>
@@ -188,7 +187,7 @@ function Favourite() {
                 <Form>                
                     <FormGroup className="login-form-group">
                         <Label className="form-label small-title">New Recipe Name</Label>
-                        <Input className="loginFormInput"  placeholder="Recipe Title" type="text" value={recipeTitle} onChange={(e)=>setRecipeTitle(e.target.value)} />
+                        <Input className="loginFormInput" required placeholder="Recipe Title" type="text" value={recipeTitle} onChange={(e)=>setRecipeTitle(e.target.value)} />
                     </FormGroup>
                 </Form>
               </ModalBody>
