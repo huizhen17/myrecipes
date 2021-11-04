@@ -88,29 +88,6 @@ function Favourite() {
       }
     };
 
-    // useEffect(()=>{
-    //   fetchFavList()
-    // },[visible])
-  
-    // const fetchFavList = async() =>{
-    //   const config = {
-    //     headers: {
-    //         "Content-type": "application/json",
-    //     },
-    //   };
-  
-    //   await axios.get('http://localhost:5000/favourite',userid,config)
-    //   .then((res) => {
-    //     if(res.data.length > 0) {
-    //       setFavList(res.data)
-    //     }else{
-    //       setFavList([]);
-    //     }
-    //   })
-    //   .catch(error => setError(error));
-    // }
-
-
     const removeFavourite = async() => {
       await axios.post(`/removefav/`,{userid,recipeID})
       .then((res) => {

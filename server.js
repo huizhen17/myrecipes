@@ -5,7 +5,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const verify = require('./routes/verifyJWToken');
 
-const Food = require('./models/recipe.js');
 const User = require('./models/user.js');
 const Favourite = require('./models/favourite.js');
 
@@ -26,13 +25,6 @@ var foodUnit, foodAisle, recName, recImage, recIngredient, recMeal, recDish;
 var foodList = [];
 
 //Routes
-//Get back all history data from MongoDb 
-// app.get('/',(req,res)=>{
-//     Food.find().sort({createdAt: -1})
-//     .then(food => res.json(food))
-//     .catch(err => res.status(400).json(`Error: ${err}`));
-// });
-
 //Perform Register
 app.post('/register',async (req,res)=>{
 
@@ -91,7 +83,7 @@ app.post('/login', async(req, res)=>{
     });
 });
 
-//Request to search for a food and add to MongoDb
+//Request to search for a food 
 app.post('/search',(req,res)=>{
     
     foodList = []; //clear previous data 
@@ -147,25 +139,6 @@ app.post('/search',(req,res)=>{
                 foodList.push(singleFood) //store in array
             }
 
-            
-            // foodValue = new Food ({
-            //     foodTitle: foodName,
-            //     foodAisle: foodAisle,
-            //     foodUnit: foodUnit,
-            //     recipeName: recName,
-            //     recipeImage: recImage,
-            //     recipeIngredient: recIngredient,
-            //     recipeMealType: recMeal,
-            //     recipeDishType: recDish
-            // });
-        
-            // foodValue.save().then(result=> {
-            //     console.log("Success");
-            // })
-            // .catch (error=> {
-            //     console.log("Error" + error);
-            // }); 
-
             res.json(foodList)
         })
 
@@ -175,13 +148,6 @@ app.post('/search',(req,res)=>{
         res.status(400).send(`Sorry we can't find what you want..`);
     }); 
 })
-
-// //Get Specific Menu from ID
-// app.get('/recipe/:id', (req, res)=>{
-//     Food.findById(req.params.id)
-//     .then(food => res.json(food))
-//     .catch(err => res.status(400).json(`Error ${err}`));
-// })
 
 //Store recipe into favourite collection
 app.post('/recipe/:id', (req, res)=>{
@@ -241,12 +207,5 @@ app.put("/favourite/:id", (req, res)=>{
     })
     .catch(err => res.status(400).json(`Error: ${err}`))
 })
-
-//Delete Recipe By ID
-// app.delete('/:id',(req, res)=>{
-//     Food.findByIdAndDelete(req.params.id)
-//     .then(() => res.send("The menu is deleted"))
-//     .catch(err => res.status(400).json(`Error: ${err}`))
-// })
 
 app.listen(port, ()=>console.log(`App is running on Port: ${port}`));

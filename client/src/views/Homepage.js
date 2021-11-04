@@ -20,29 +20,7 @@ function Homepage() {
   const [error, setError] = useState(null);
 
   const titleRef = useRef(null)
-
-  // useEffect(()=>{
-  //   fetchFoodList()
-  // },[search])
-
-  // const fetchFoodList = async() =>{
-  //   const config = {
-  //     headers: {
-  //         "Content-type": "application/json",
-  //     },
-  //   };
-
-  //   await axios.get('http://localhost:5000/',config)
-  //   .then((res) => {
-  //     if(res.data.length > 0) {
-  //       setFoodList(res.data)
-  //     }else{
-  //       setFoodList([]);
-  //     }
-  //   })
-  //   .catch(error => console.log(error));
-  // }
-
+  
   useEffect(() => {
     getLocalRecipe();
   },[search]);
