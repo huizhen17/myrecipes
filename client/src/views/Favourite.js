@@ -76,7 +76,7 @@ function Favourite() {
         let user = await JSON.parse(localStorage.getItem('userinfo'));
         var userid = user._id;
         setLoginUser(user);
-        await axiosInstance.get(`http://localhost:5000/favourite/${userid}`)
+        await axiosInstance.get(`/favourite/${userid}`)
         .then((res) => {
           if(res.data.length > 0) {
             setFavList(res.data)
