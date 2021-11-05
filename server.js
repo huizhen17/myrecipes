@@ -51,33 +51,6 @@ app.post('/register',async (req,res)=>{
 
     try{
         await user.save();
-
-        //email message option
-        const mailOptions = {
-            from: 'example.lu123@gmail.com',
-            to: 'example.lu123@gmail.com',
-            subject: 'Greeting from FoodFinder - Welcome Onboard!',
-            text: 'Hello'
-        };
-
-        //email transport configuration
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: 'example.lu123@gmail.com',
-                pass: 'ExamPle@123'
-            }
-        });
-
-        transporter.sendMail(mailOptions, (error, info) => {
-          if(error){
-            res.status(400).json(`Error: ${err}`);
-            console.log(error);
-          } else{
-            console.log("success")
-          }
-        })
-        
         res.send({user: user._id});
     }catch(err){
         res.status(400).json(`Error: ${err}`);
