@@ -56,9 +56,8 @@ function Homepage() {
 
   const handleSearch = async(e) => {
     e.preventDefault()
-    const searchQuery = {search}
-
-    await axiosInstance.post("/search",searchQuery)
+    const searchQuery = search;
+    await axiosInstance.post("/search",{searchQuery})
     .then((res) => {
         setError(null);
         if(res.data.length > 0) {
@@ -77,9 +76,9 @@ function Homepage() {
     setSearch('');
   }
 
-  const searchOnClick = async(search) => {
-    const searchQuery = {search};
-    await axiosInstance.post(`/search`,searchQuery)
+  const searchOnClick = async(item) => {
+    const searchQuery = item;
+    await axiosInstance.post(`/search`,{searchQuery})
     .then((res) => {
         setError(null);
         if(res.data.length > 0) {
