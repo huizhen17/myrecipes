@@ -106,7 +106,7 @@ function Homepage() {
           backgroundImage:
             "url(" + require("../assets/img/main-header.png").default + ")", opacity: 1, 
         }}>
-        <h2 className="header-text text-center title">Welcome to the Food Heaven...</h2>
+        <h2 className="header-text text-center title"><b>Welcome to the Food Heaven...</b></h2>
         <Container className="container-md">
           <Form className="search-form" onSubmit={handleSearch} method="POST" encType="multipart/form-data">
             <InputGroup className="form-group-no-border" >
@@ -123,10 +123,11 @@ function Homepage() {
             </FormGroup>
           </Form>
           <div className="text-center suggestion"> 
-            <p><i>Suggestion: </i></p>
-            <p className="suggestion-item" onClick={()=>searchOnClick("apple")}><i>Apple </i></p>
+            <p>Suggestion:</p>
+            <p className="suggestion-item" onClick={()=>searchOnClick("chicken")}><i>Chicken </i></p>
             <p className="suggestion-item" onClick={()=>searchOnClick("broccoli")}><i>Broccoli </i></p>
             <p className="suggestion-item" onClick={()=>searchOnClick("cabbage")}><i>Cabbage </i></p>
+            <p className="suggestion-item" onClick={()=>searchOnClick("pizza")}><i>Pizza </i></p>
             <p className="suggestion-item" onClick={()=>searchOnClick("pumpkin")}><i>Pumpkin </i></p>
           </div>
           <p className={`${error !== null ? "errorMessage display-block" : "display-none"}`} color="danger">
