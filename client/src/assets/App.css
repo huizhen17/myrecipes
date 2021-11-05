@@ -411,6 +411,18 @@ a:hover{
   /* margin: 15px 0 30px; */
 }
 
+.suggestion{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px!important;
+}
+
+.suggestion-item{
+  margin-left: 12px;
+  cursor:pointer;
+}
+
 .foodunit{
   /* margin-top: 1rem!important  */
 }
@@ -487,7 +499,7 @@ a:hover{
 
 /*  Single Recipe   */
 .single-recipe-image{
-  width: 600px;
+  width: 100%;
   border: 2px solid #81b97b;
   padding: 5px;
 }
@@ -550,4 +562,35 @@ a:hover{
 
 .login-button-container{
   margin: 30px 0 10px;
+}
+
+
+@media (max-width: 768px){
+  .single-recipe-image{
+    width: 100%;
+    border: 2px solid #81b97b;
+    padding: 5px;
+  }
+
+  .navbar-transparent{
+    margin: 0 auto;
+    background-color: white!important;
+    padding: 30px 0!important;
+    box-shadow: 0px 1px 0px #dedede;
+  }
+  
+  .navbar-collapse {
+    margin: 15px 0 0;
+  }
+
+  .suggestion-item{
+    margin-left: 15px;
+    cursor:pointer;
+  }
+}
+
+@media (max-width: 413px){
+  .suggestion{
+    display: none;
+  }
 }

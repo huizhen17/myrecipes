@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import HomeNavbar from '../components/HomeNavbar';
 
 import {
@@ -12,11 +12,7 @@ import {
     CardBody,
     Card,
     Button,
-    FormGroup,
-    InputGroupText,
-    InputGroupAddon,
-    InputGroup,
-    Alert
+    FormGroup
 } from "reactstrap";
 
 function Profile() {

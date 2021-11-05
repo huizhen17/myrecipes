@@ -5,7 +5,8 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 // Styles
 import './assets/index.css';
-import './assets/App.css'
+import './assets/App.css';
+import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Pages
@@ -13,7 +14,6 @@ import Login from './views/Login';
 import Homepage from './views/Homepage';
 import SignUp from './views/SignUp';
 import SingleRecipe from './views/SingleRecipe';
-import UpdateMenu from './views/UpdateMenu';
 import Favourite from './views/Favourite';
 import Profile from './views/Profile';
 
@@ -32,10 +32,8 @@ function App() {
     }else{
       let user = JSON.parse(localStorage.getItem('userinfo'));
       setLoginUser(user);
-      console.log(user)
     }
   };
-
 
   return (
     <>
@@ -50,14 +48,6 @@ function App() {
             path="/recipe/:id" exact
             render={(props) => <SingleRecipe {...props}/>}
           />
-          <Route 
-            path="/recipe/:id/edit" exact
-            render={(props)=> <UpdateMenu {...props}/>}
-          />
-            {/* {
-              user && user._id ? <UpdateMenu user={user} /> : <Login user={user}/>
-            }
-          </Route> */}
           <Route 
             path="/login" exact
           >

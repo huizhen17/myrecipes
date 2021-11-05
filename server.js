@@ -88,8 +88,8 @@ app.post('/login', async(req, res)=>{
 app.post('/search',(req,res)=>{
     
     foodList = []; //clear previous data 
-
-    const foodName = req.body.search
+    console.log(req.body.searchQuery)
+    const foodName = req.body.searchQuery
     const queryStr = `https://api.spoonacular.com/food/ingredients/search?apiKey=${apikey}&query=${foodName}&number=1&metaInformation=true`
     const queryRec = `https://api.edamam.com/search?q=${foodName}&app_id=ceafc23b&app_key=${recApiKey}`;
 

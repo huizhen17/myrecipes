@@ -59,7 +59,7 @@ function SignUp() {
                     },
                 };
 
-                const { data } = await axiosInstance.post("/register", {signUpName, signUpEmail, signUpPass, signUpRePass} , config);
+                await axiosInstance.post("/register", {signUpName, signUpEmail, signUpPass, signUpRePass} , config);
 
                 setError("");
                 history.push("/login");

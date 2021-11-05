@@ -33,7 +33,7 @@ function Recipe({foodList}) {
               foodList.map((food, key)=>{
                 return(
                 <>
-                    <Col className="search-row-container" lg="4" key={key}>
+                    <Col className="search-row-container" lg="4" md="6" key={key}>
                       <Card>
                         <Link to={`/recipe/${key}`}>
                           <CardImg top width="100%" draggable="false" src={food.recipeImage === null ? require("../assets/img/menu_placeholder.png").default : food.recipeImage } alt="Card image cap" />

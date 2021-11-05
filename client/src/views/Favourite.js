@@ -90,7 +90,6 @@ function Favourite() {
 
     const removeFavourite = async() => {
       const recTitle = recipeID;
-      console.log(recTitle)
       await axiosInstance.post(`/removefav`,{userid,recTitle})
       .then((res) => {
           setVisible(true);
@@ -107,6 +106,7 @@ function Favourite() {
             <Alert className="alert-fav" color="warning" style={{zIndex:"9999"}} isOpen={visible}>
               <i class="fa fa-info-circle" aria-hidden="true"></i> Successfully remove from favourite!
             </Alert>
+            {error && <h3>{error}</h3>} 
             <h3 className="title text-center">My Favourite</h3>
             <Row>
             {favList.length === 0 ?
@@ -124,7 +124,7 @@ function Favourite() {
               favList.map((food, key)=>{
                 return(
                   <>
-                    <Col lg="4" key={key}>
+                    <Col lg="4" md="6" key={key}>
                       <Card style={{margin:"20px 0"}}>
                         <CardBody>
                           <CardTitle tag="h4" className="small-title">{food.recipeName}</CardTitle>

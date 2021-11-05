@@ -22,7 +22,6 @@ function SingleRecipe(props) {
     const [recIng, setRecIng] = useState([]);
     const [recMeal, setRecMeal] = useState("");
     const [recDish, setRecDish] = useState("");
-    const [id, setID] = useState("");
     const [user, setLoginUser] = useState({});
     const [error, setError] = useState("");
 
@@ -47,7 +46,6 @@ function SingleRecipe(props) {
                 let recipe = await JSON.parse(localStorage.getItem('recipeinfo'))[recipeID];
 
                 setLoginUser(user);
-                setID(user._id);
 
                 let userid = user._id;
                 let rectitle = recipe.recipeName;
@@ -121,10 +119,10 @@ function SingleRecipe(props) {
                     <i class="fa fa-info-circle" aria-hidden="true"></i> Successfully remove from favourite!
                 </Alert>
                 <Row>
-                    <Col lg="6" md="12" sm="12">
+                    <Col lg="6" xs="12">
                         <img className="single-recipe-image"  src={recImg === null ? require("../assets/img/menu_placeholder.png").default : recImg } alt="Food"/>
                     </Col>
-                    <Col lg="6" md="12" sm="12">
+                    <Col lg="6" xs="12">
                         <div>
                             <h3 className="title">{recTitle}</h3>
                         </div>
