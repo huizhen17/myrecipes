@@ -26,7 +26,7 @@ const recApiKey = process.env.EDAMAN_API_KEY;
 var foodUnit, foodAisle, recName, recImage, recIngredient, recMeal, recDish;
 var foodList = [];
 
-let transporter = nodemailer.createTransport({
+let transporter = nodemailer.createTransport("SMTP",{
     service: 'gmail',
     auth: {
         user: 'example.lu123@gmail.com',
