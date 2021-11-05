@@ -74,7 +74,6 @@ app.post('/login', async(req, res)=>{
 
     //Create and assign a token when login
     const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
-    res.header('auth-token',token).send(token);
 
     res.status(200).json({
         _id: user._id,
