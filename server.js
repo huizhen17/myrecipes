@@ -50,7 +50,7 @@ app.post('/register',async (req,res)=>{
 
     try{
         const savedUser = await user.save();
-        res.send({user: user._id});
+        res.send({user: user._id},savedUser);
     }catch(err){
         res.status(400).json(`Error: ${err}`);
     }
@@ -186,7 +186,6 @@ app.post('/favourited', (req, res)=>{
 
 //Delete Favoruite 
 app.post('/removefav',(req, res)=>{
-    console.log(req.body.recTitle);
     Favourite.findOneAndDelete({"userID":req.body.userid, "recipeID": req.body.recTitle})
     .then(() => res.send("The menu is deleted from your favourite"))
     .catch(err => res.status(400).json(`Error: ${err}`))
