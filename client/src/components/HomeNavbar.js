@@ -53,7 +53,7 @@ const HomeNavbar = ({user}) => {
 
     return (
     <div>
-      <Navbar className={classnames("nav-bar fixed-top", navbarColor)}  expand="md">
+      <Navbar className={classnames("nav-bar fixed-top", navbarColor)} expand="lg">
         <Container>
             <NavbarBrand className="link" href="/">
                 FOOD<b className="finder">FINDER</b>

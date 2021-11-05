@@ -121,10 +121,10 @@ function SingleRecipe(props) {
                     <i class="fa fa-info-circle" aria-hidden="true"></i> Successfully remove from favourite!
                 </Alert>
                 <Row>
-                    <Col>
+                    <Col lg="6" md="12" sm="12">
                         <img className="single-recipe-image"  src={recImg === null ? require("../assets/img/menu_placeholder.png").default : recImg } alt="Food"/>
                     </Col>
-                    <Col>
+                    <Col lg="6" md="12" sm="12">
                         <div>
                             <h3 className="title">{recTitle}</h3>
                         </div>
