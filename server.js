@@ -4,6 +4,7 @@ const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const path = require("path");
+const nodemailer = require("nodemailer");
 const verify = require('./routes/verifyJWToken');
 
 const User = require('./models/user.js');
@@ -24,6 +25,21 @@ const recApiKey = process.env.EDAMAN_API_KEY;
 
 var foodUnit, foodAisle, recName, recImage, recIngredient, recMeal, recDish;
 var foodList = [];
+
+let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'example.lu123@gmail.com',
+        pass: 'ExamPle@123',
+    },
+});
+
+let mailOptions = {
+    from: 'example.lu123@gmail.com',
+    to: "huizhen312@gmail.com",
+    subject: `The subject goes here`,
+    html: `The body of the email goes here in HTML`
+};
 
 //Routes
 //Perform Register
@@ -50,6 +66,13 @@ app.post('/register',async (req,res)=>{
 
     try{
         await user.save();
+        transporter.sendMail(mailOptions, function (err, info) {
+            if (err) {
+              res.json(err);
+            } else {
+              res.json(info);
+            }
+        });
         res.send({user: user._id});
     }catch(err){
         res.status(400).json(`Error: ${err}`);
