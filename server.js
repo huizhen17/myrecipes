@@ -36,7 +36,7 @@ let transporter = nodemailer.createTransport({
 
 let mailOptions = {
     from: 'example.lu123@gmail.com',
-    to: "huizhen312@gmail.com",
+    to: "example.lu123@gmail.com",
     subject: `The subject goes here`,
     html: `The body of the email goes here in HTML`
 };
