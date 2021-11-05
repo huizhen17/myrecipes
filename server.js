@@ -5,7 +5,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const path = require("path");
 const verify = require('./routes/verifyJWToken');
-const nodemailer = require("nodemailer");
 
 const User = require('./models/user.js');
 const Favourite = require('./models/favourite.js');
@@ -75,7 +74,7 @@ app.post('/login', async(req, res)=>{
 
     //Create and assign a token when login
     const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
-    //res.header('auth-token',token).send(token);
+    res.header('auth-token',token).send(token);
 
     res.status(200).json({
         _id: user._id,
@@ -152,7 +151,7 @@ app.post('/search',(req,res)=>{
 })
 
 //Store recipe into favourite collection
-app.post('/recipe/:id', verify, (req, res)=>{
+app.post('/recipe/:id', (req, res)=>{
     //store into new schema
     favValue = new Favourite ({
         recipeID: req.params.id,
@@ -186,21 +185,21 @@ app.post('/favourited', (req, res)=>{
 })
 
 //Delete Favoruite 
-app.post('/removefav',verify,(req, res)=>{
+app.post('/removefav',(req, res)=>{
     Favourite.findOneAndDelete({"userID":req.body.userid, "recipeID": req.body.recTitle})
     .then(() => res.send("The menu is deleted from your favourite"))
     .catch(err => res.status(400).json(`Error: ${err}`))
 })
 
 //Get all favourites that match with User ID and sort based on the date
-app.get('/favourite/:id', verify, (req,res)=>{
+app.get('/favourite/:id', (req,res)=>{
     Favourite.find({"userID": req.params.id}).sort({updatedAt: -1})
     .then(food => res.json(food))
     .catch(err => res.status(400).json(`Error: ${err}`));
 });
 
 //Update the favourite based on the favourite ID
-app.put("/favourite/:id", verify, (req, res)=>{
+app.put("/favourite/:id", (req, res)=>{
     Favourite.findOneAndUpdate( {_id: req.params.id},{
         recipeName: req.body.recipeTitle
     })
