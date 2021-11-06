@@ -26,29 +26,6 @@ const recApiKey = process.env.EDAMAN_API_KEY;
 var foodUnit, foodAisle, recName, recImage, recIngredient, recMeal, recDish;
 var foodList = [];
 
-const transport = {
-    //all of the configuration for making a site send an email.
-  
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    auth: {
-      user: process.env.EMAIL,
-      pass: process.env.PASSWORD
-    }
-};
-
-const transporter = nodemailer.createTransport(transport);
-  transporter.verify((error, success) => {
-    if(error) {
-      //if error happened code ends here
-      console.error(error)
-    } else {
-      //this means success
-      console.log('users ready to mail myself')
-    }
-});
-
 //Routes
 //Perform Register
 app.post('/register',async (req,res)=>{
@@ -76,7 +53,31 @@ app.post('/register',async (req,res)=>{
 
     try{
         await user.save();
-        const mail = {
+
+        let transport = {
+            //all of the configuration for making a site send an email.
+          
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth: {
+              user: process.env.EMAIL,
+              pass: process.env.PASSWORD
+            }
+        };
+        
+        let transporter = nodemailer.createTransport(transport);
+          transporter.verify((error, success) => {
+            if(error) {
+              //if error happened code ends here
+              console.error(error)
+            } else {
+              //this means success
+              console.log('users ready to mail myself')
+            }
+        });
+        
+        let mail = {
             from: process.env.EMAIL,
             to: "huizhen312@gmail.com",
             subject: "Welcome to FoodFinder! - Search Your Favourite Food Right Here",
@@ -84,7 +85,7 @@ app.post('/register',async (req,res)=>{
             We're excited to have you on board and will be happy to help you set everything up. `
         }
         
-        let info = await transporter.sendMail(mail, (err,data) => {
+        transporter.sendMail(mail, (err,data) => {
             if(err) {
               console.log(err)
               res.status(400).json(`Error: ${err}`);
