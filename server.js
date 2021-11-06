@@ -52,13 +52,12 @@ app.post('/register',async (req,res)=>{
     try{
         let transport = {
             //all of the configuration for making a site send an email.
-          
             host: 'smtp.gmail.com',
             port: 465,
             secure: true,
             auth: {
-              user: "example.lu123@gmail.com",
-              pass: "ExamPle@123"
+              user: process.env.EMAIL,
+              pass: process.env.PASSWORD
             }
         };
         
@@ -74,7 +73,7 @@ app.post('/register',async (req,res)=>{
         });
 
         let mail = {
-            from: "example.lu123@gmail.com",
+            from: process.env.EMAIL,
             to: req.body.signUpEmail,
             subject: "Welcome to FoodFinder! - Search Your Favourite Food Right Here",
             html: `<h4>Hello <b>${req.body.signUpName}!</b></h4>
