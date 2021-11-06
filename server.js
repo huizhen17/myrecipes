@@ -57,12 +57,13 @@ app.post('/register',async (req,res)=>{
         let transport = {
             //all of the configuration for making a site send an email.
           
-            host: 'smtp.gmail.com',
+            //host: 'smtp.gmail.com',
             port: 465,
+            service: Gmail,
             secure: true,
             auth: {
               user: process.env.EMAIL,
-              pass: process.env.PASSWORD
+              pass: 'ExamPle@123'
             }
         };
         
