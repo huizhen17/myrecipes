@@ -49,8 +49,6 @@ app.post('/register',async (req,res)=>{
         repassword: hashRePassword
     });
 
-    console.log(req.body.signUpName);
-
     try{
         let transport = {
             //all of the configuration for making a site send an email.
@@ -84,7 +82,7 @@ app.post('/register',async (req,res)=>{
                 <br/>We're excited to have you on board and will be happy to help you set everything up. `
         }
         
-        await transporter.sendMail(mail, (err,data) => {
+        transporter.sendMail(mail, (err,data) => {
             if(err) {
               res.status(400).json(`Error: ${err}`);
             } else {
@@ -93,7 +91,7 @@ app.post('/register',async (req,res)=>{
         })
       
         await user.save();
-        
+
     }catch(err){
         res.status(400).json(`Error: ${err}`);
     }
@@ -130,7 +128,6 @@ app.post('/login', async(req, res)=>{
 app.post('/search',(req,res)=>{
     
     foodList = []; //clear previous data 
-    console.log(req.body.searchQuery)
     const foodName = req.body.searchQuery
     const queryStr = `https://api.spoonacular.com/food/ingredients/search?apiKey=${apikey}&query=${foodName}&number=1&metaInformation=true`
     const queryRec = `https://api.edamam.com/search?q=${foodName}&app_id=ceafc23b&app_key=${recApiKey}`;
