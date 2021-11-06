@@ -57,6 +57,7 @@ function Homepage() {
   const handleSearch = async(e) => {
     e.preventDefault()
     const searchQuery = search;
+    console.log(searchQuery)
     await axiosInstance.post("/search",{searchQuery})
     .then((res) => {
         setError(null);
