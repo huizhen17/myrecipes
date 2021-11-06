@@ -91,10 +91,11 @@ app.post('/register',async (req,res)=>{
               res.status(400).json(`Error: ${err}`);
             } else {
               console.log("success");
+              res.send({status: "success"});
             }
         })
       
-        res.send({user: user._id});
+        //res.send({user: user._id});
     }catch(err){
         res.status(400).json(`Error: ${err}`);
     }
