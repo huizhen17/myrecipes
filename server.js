@@ -30,8 +30,8 @@ const transport = {
     //all of the configuration for making a site send an email.
   
     host: 'smtp.gmail.com',
-    port: 587,
-    secure: false,
+    port: 465,
+    secure: true,
     auth: {
       user: process.env.EMAIL,
       pass: process.env.PASSWORD
@@ -80,9 +80,8 @@ app.post('/register',async (req,res)=>{
             from: process.env.EMAIL,
             to: "huizhen312@gmail.com",
             subject: "Welcome to FoodFinder! - Search Your Favourite Food Right Here",
-            text: `Hello ${req.body.signUpName}! 
-                Thank you for signing up to FoodFinder! 
-                We're excited to have you on board and will be happy to help you set everything up. `
+            text: `Hello ${req.body.signUpName}! Thank you for signing up to FoodFinder! 
+            We're excited to have you on board and will be happy to help you set everything up. `
         }
         await transporter.sendMail(mail, (err,data) => {
             if(err) {
