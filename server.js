@@ -83,7 +83,8 @@ app.post('/register',async (req,res)=>{
             text: `Hello ${req.body.signUpName}! Thank you for signing up to FoodFinder! 
             We're excited to have you on board and will be happy to help you set everything up. `
         }
-        await transporter.sendMail(mail, (err,data) => {
+        
+        transporter.sendMail(mail, (err,data) => {
             if(err) {
               console.log(err)
               res.status(400).json(`Error: ${err}`);
