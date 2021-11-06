@@ -62,7 +62,7 @@ app.post('/register',async (req,res)=>{
             //service: Gmail,
             secure: true,
             auth: {
-              user: process.env.EMAIL,
+              user: 'example.lu123@gmail.com',
               pass: 'ExamPle@123'
             }
         };
