@@ -59,7 +59,6 @@ app.post('/register',async (req,res)=>{
           
             host: 'smtp.gmail.com',
             port: 465,
-            //service: Gmail,
             secure: true,
             auth: {
               user: "example.lu123@gmail.com",
@@ -80,10 +79,11 @@ app.post('/register',async (req,res)=>{
 
         let mail = {
             from: "example.lu123@gmail.com",
-            to: "huizhen312@gmail.com",
+            to: req.body.signUpEmail,
             subject: "Welcome to FoodFinder! - Search Your Favourite Food Right Here",
-            text: `Hello ${req.body.signUpName}! Thank you for signing up to FoodFinder! 
-            We're excited to have you on board and will be happy to help you set everything up. `
+            html: `<h5>Hello ${req.body.signUpName}!</h5>
+                <br/>Thank you for signing up to FoodFinder! 
+                <br/>We're excited to have you on board and will be happy to help you set everything up. `
         }
         
         transporter.sendMail(mail, (err,data) => {
