@@ -81,14 +81,13 @@ app.post('/register',async (req,res)=>{
             from: "example.lu123@gmail.com",
             to: req.body.signUpEmail,
             subject: "Welcome to FoodFinder! - Search Your Favourite Food Right Here",
-            html: `<h5>Hello ${req.body.signUpName}!</h5>
+            html: `<h4>Hello <b>${req.body.signUpName}!</b></h4>
                 <br/>Thank you for signing up to FoodFinder! 
                 <br/>We're excited to have you on board and will be happy to help you set everything up. `
         }
         
         transporter.sendMail(mail, (err,data) => {
             if(err) {
-              console.log(err)
               res.status(400).json(`Error: ${err}`);
             } else {
               console.log("success");
