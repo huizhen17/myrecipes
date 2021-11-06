@@ -82,7 +82,7 @@ app.post('/register',async (req,res)=>{
                 <br/>We're excited to have you on board and will be happy to help you set everything up. `
         }
         
-        transporter.sendMail(mail, (err,data) => {
+        await transporter.sendMail(mail, (err,data) => {
             if(err) {
               res.status(400).json(`Error: ${err}`);
             } else {
@@ -91,7 +91,7 @@ app.post('/register',async (req,res)=>{
         })
       
         await user.save();
-        res.json({Status: "success"});
+        //res.json({Status: "success"});
     }catch(err){
         res.status(400).json(`Error: ${err}`);
     }
