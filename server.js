@@ -62,8 +62,8 @@ app.post('/register',async (req,res)=>{
             //service: Gmail,
             secure: true,
             auth: {
-              user: 'example.lu123@gmail.com',
-              pass: 'ExamPle@123'
+              user: "example.lu123@gmail.com",
+              pass: "ExamPle@123"
             }
         };
         
@@ -79,7 +79,7 @@ app.post('/register',async (req,res)=>{
         });
 
         let mail = {
-            from: process.env.EMAIL,
+            from: "example.lu123@gmail.com",
             to: "huizhen312@gmail.com",
             subject: "Welcome to FoodFinder! - Search Your Favourite Food Right Here",
             text: `Hello ${req.body.signUpName}! Thank you for signing up to FoodFinder! 
