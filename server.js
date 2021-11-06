@@ -76,7 +76,7 @@ app.post('/register',async (req,res)=>{
               console.log('users ready to mail myself')
             }
         });
-        
+
         let mail = {
             from: process.env.EMAIL,
             to: "huizhen312@gmail.com",
@@ -93,7 +93,6 @@ app.post('/register',async (req,res)=>{
               console.log("success");
             }
         })
-        console.log(`Message sent: ${info}`);
       
         res.send({user: user._id});
     }catch(err){
