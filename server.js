@@ -26,6 +26,29 @@ const recApiKey = process.env.EDAMAN_API_KEY;
 var foodUnit, foodAisle, recName, recImage, recIngredient, recMeal, recDish;
 var foodList = [];
 
+const transport = {
+    //all of the configuration for making a site send an email.
+  
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.PASSWORD
+    }
+};
+
+const transporter = nodemailer.createTransport(transport);
+  transporter.verify((error, success) => {
+    if(error) {
+      //if error happened code ends here
+      console.error(error)
+    } else {
+      //this means success
+      console.log('users ready to mail myself')
+    }
+});
+
 //Routes
 //Perform Register
 app.post('/register',async (req,res)=>{
@@ -49,8 +72,27 @@ app.post('/register',async (req,res)=>{
         repassword: hashRePassword
     });
 
+    console.log(req.body.signUpName);
+
     try{
         await user.save();
+        const mail = {
+            from: process.env.EMAIL,
+            to: "huizhen312@gmail.com",
+            subject: "Welcome to FoodFinder! - Search Your Favourite Food Right Here",
+            text: `Hello ${req.body.signUpName}! 
+                Thank you for signing up to FoodFinder! 
+                We're excited to have you on board and will be happy to help you set everything up. `
+        }
+        await transporter.sendMail(mail, (err,data) => {
+            if(err) {
+              console.log(err)
+              res.status(400).json(`Error: ${err}`);
+            } else {
+              console.log("success");
+            }
+        })
+      
         res.send({user: user._id});
     }catch(err){
         res.status(400).json(`Error: ${err}`);
