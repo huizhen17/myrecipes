@@ -91,7 +91,7 @@ app.post('/register',async (req,res)=>{
         })
       
         await user.save();
-        //res.json({Status: "success"});
+        res.json({Status: "success"});
     }catch(err){
         res.status(400).json(`Error: ${err}`);
     }
