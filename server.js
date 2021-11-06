@@ -52,8 +52,6 @@ app.post('/register',async (req,res)=>{
     console.log(req.body.signUpName);
 
     try{
-        await user.save();
-
         let transport = {
             //all of the configuration for making a site send an email.
           
@@ -86,16 +84,16 @@ app.post('/register',async (req,res)=>{
                 <br/>We're excited to have you on board and will be happy to help you set everything up. `
         }
         
-        transporter.sendMail(mail, (err,data) => {
+        await transporter.sendMail(mail, (err,data) => {
             if(err) {
               res.status(400).json(`Error: ${err}`);
             } else {
-              console.log("success");
-              res.send({status: "success"});
+              res.send({status: "Email sent success"});
             }
         })
       
-        //res.send({user: user._id});
+        await user.save();
+        
     }catch(err){
         res.status(400).json(`Error: ${err}`);
     }
