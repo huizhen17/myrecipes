@@ -62,7 +62,7 @@ function SignUp() {
 
                 await axiosInstance.post("/register", {signUpName, signUpEmail, signUpPass, signUpRePass} , config)
                 .then((res)=>{
-                    emailjs.sendForm('service_4esexkv','template_mewsy6b',e.target,process.env.REACT_APP_EMAILJS_USER_ID)
+                    emailjs.sendForm('service_4esexkv','template_mewsy6b',e.target,'user_wWWPuTqvoRp0gWqdlMBoi')
                     .then((res)=>{
                         console.log(res)
                     }).catch((err)=>{
@@ -95,10 +95,10 @@ function SignUp() {
                                             <h2 className="small-title no-margin-top" >Create a New Account</h2>
                                             <p className="small-title">It's quick and easy.</p>
                                             <FormGroup className="login-form-group">
-                                                <Input className="loginFormInput" autoFocus required placeholder="Username" type="text" value={signUpName} onChange={(e)=>setSignUpName(e.target.value)}/>
+                                                <Input className="loginFormInput" autoFocus required placeholder="Username" type="text" name="signUpName" value={signUpName} onChange={(e)=>setSignUpName(e.target.value)}/>
                                             </FormGroup>
                                             <FormGroup className="login-form-group">
-                                                <Input className="loginFormInput" required placeholder="Email" type="email" value={signUpEmail} onChange={(e)=>setSignUpEmail(e.target.value)}/>
+                                                <Input className="loginFormInput" required placeholder="Email" type="email" name="signUpEmail"  value={signUpEmail} onChange={(e)=>setSignUpEmail(e.target.value)}/>
                                             </FormGroup>
                                             <FormGroup className="login-form-group">
                                                 <InputGroup>
