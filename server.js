@@ -128,7 +128,6 @@ app.post('/search',(req,res)=>{
     
     foodList = []; //clear previous data 
     const foodName = req.body.searchQuery
-    console.log(req.body.searchQuery);
     const queryStr = `https://api.spoonacular.com/food/ingredients/search?apiKey=${apikey}&query=${foodName}&number=1&metaInformation=true`
     const queryRec = `https://api.edamam.com/search?q=${foodName}&app_id=ceafc23b&app_key=${recApiKey}`;
 
@@ -144,8 +143,6 @@ app.post('/search',(req,res)=>{
         }else{
             foodAisle = "";
         }
-        // foodUnit = response.data.results[0].possibleUnits
-        // foodAisle = response.data.results[0].aisle
 
         axios.get(queryRec).then((response)=>{
             for(var i = 0; i < response.data.hits.length ; i++){

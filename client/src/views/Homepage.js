@@ -57,7 +57,6 @@ function Homepage() {
   const handleSearch = async(e) => {
     e.preventDefault()
     const searchQuery = search;
-    console.log(searchQuery)
     await axiosInstance.post("/search",{searchQuery})
     .then((res) => {
         setError(null);
@@ -79,7 +78,6 @@ function Homepage() {
 
   const searchOnClick = async(item) => {
     const searchQuery = item;
-    console.log(searchQuery)
     await axiosInstance.post(`/search`,{searchQuery})
     .then((res) => {
         setError(null);
