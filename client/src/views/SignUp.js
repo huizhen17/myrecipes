@@ -1,6 +1,7 @@
 
 import React, {useState} from 'react'
 import { Link, useHistory } from 'react-router-dom';
+import emailjs from 'emailjs-com';
 
 import {
     Container,
@@ -59,14 +60,22 @@ function SignUp() {
                     },
                 };
 
-                await axiosInstance.post("/register", {signUpName, signUpEmail, signUpPass, signUpRePass} , config);
-
+                await axiosInstance.post("/register", {signUpName, signUpEmail, signUpPass, signUpRePass} , config)
+                .then((res)=>{
+                    emailjs.sendForm('service_4esexkv','template_mewsy6b',e.target)
+                    .then((res)=>{
+                        console.log(res)
+                    }).catch((err)=>{
+                        console.log(err);
+                    });
+                    history.push("/login"); 
+                })
+                
                 setError("");
-                history.push("/login");
 
             } catch (error) {
-                setError(error.response.data);
-                console.log(error.response.data);
+                setError(error);
+                console.log(error);
             }
         }
         

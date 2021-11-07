@@ -4,7 +4,6 @@ const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const path = require("path");
-const nodemailer = require("nodemailer");
 const verify = require('./routes/verifyJWToken');
 
 const User = require('./models/user.js');
@@ -50,47 +49,8 @@ app.post('/register',async (req,res)=>{
     });
 
     try{
-        let transport = {
-            //all of the configuration for making a site send an email.
-            host: 'smtp.gmail.com',
-            port: 465,
-            secure: true,
-            auth: {
-              user: process.env.EMAIL,
-              pass: process.env.PASSWORD
-            }
-        };
-        
-        let transporter = nodemailer.createTransport(transport);
-          transporter.verify((error, success) => {
-            if(error) {
-              //if error happened code ends here
-              console.error(error)
-            } else {
-              //this means success
-              console.log('users ready to mail myself')
-            }
-        });
-
-        let mail = {
-            from: process.env.EMAIL,
-            to: req.body.signUpEmail,
-            subject: "Welcome to FoodFinder! - Search Your Favourite Food Right Here",
-            html: `<h4>Hello <b>${req.body.signUpName}!</b></h4>
-                <br/>Thank you for signing up to FoodFinder! 
-                <br/>We're excited to have you on board and will be happy to help you set everything up. `
-        }
-        
-        await transporter.sendMail(mail, (err,data) => {
-            if(err) {
-              res.status(400).json(`Error: ${err}`);
-            } else {
-              res.send({status: "Email sent success"});
-            }
-        })
-      
-        await user.save();
-        res.json({Status: "success"});
+        const savedUser = await user.save();
+        res.send({user: user._id});
     }catch(err){
         res.status(400).json(`Error: ${err}`);
     }
