@@ -50,8 +50,9 @@ function Login() {
             .then((res)=>{
                 //setLoginUser(res.data);
                 localStorage.setItem("userinfo", JSON.stringify(res.data));
-                console.log(res.data);
+                //console.log(res.data);
                 setError("");
+                window.location.reload(false);
                 history.push('/');    
             })
 

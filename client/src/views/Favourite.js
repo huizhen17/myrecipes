@@ -70,8 +70,7 @@ function Favourite() {
   
     const getLocalUsers = async() => {
       if(localStorage.getItem('userinfo') === null){
-        localStorage.setItem('userinfo',JSON.stringify([]));
-        setLoginUser([]);
+        setLoginUser({});
       }else{
         let user = await JSON.parse(localStorage.getItem('userinfo'));
         var userid = user._id;

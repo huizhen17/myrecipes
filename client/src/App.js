@@ -1,6 +1,6 @@
 //import '/assets/App.css';
 import React, {useState , useEffect} from 'react';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
 
 // Styles
@@ -20,18 +20,24 @@ import Profile from './views/Profile';
 
 function App() {
 
-  const [user, setLoginUser] = useState([]);
+  const [user, setLoginUser] = useState({});
 
   useEffect(() => {
     getLocalUsers();
   },[]);
 
   const getLocalUsers = () => {
+
     if(localStorage.getItem('userinfo') === null){
-      localStorage.setItem('userinfo',JSON.stringify([]));
+      setLoginUser({});
     }else{
-      let user = JSON.parse(localStorage.getItem('userinfo'));
-      setLoginUser(user);
+      let users = JSON.parse(localStorage.getItem('userinfo'));
+
+      if(users.length === 0){
+        setLoginUser({});
+      }else{
+        setLoginUser(users);
+      }
     }
   };
 
@@ -42,7 +48,7 @@ function App() {
           <Route 
             exact 
             path="/"
-            render={(props) => <Homepage user={user} />}
+            render={(props) => <Homepage  />}
           />
           <Route 
             path="/recipe/:id" exact
@@ -52,30 +58,34 @@ function App() {
             path="/login" exact
           >
           {
-            user && user._id ? <Homepage user={user}/> : <Login user={user}/>
+            user.token === undefined ? <Login /> : <Redirect to='/'/> 
           }
           </Route>
           <Route 
             path="/signup" exact
           >
           {
-            user && user._id ? <Homepage user={user}/> : <SignUp user={user}/>
+            user.token === undefined ? <SignUp /> : <Redirect to='/' />
           }
           </Route>
-          <Route 
-            path="/profile" exact
-          >
           {
-            user ? <Profile user={user}/> : <Login user={user}/>
+            user.token === undefined ? 
+              <Redirect to='/login' />
+            :
+            <Route 
+              path="/profile" exact
+              render={(props) => <Profile {...props}/>}
+            />
           }
-          </Route>
-          <Route 
-            path="/favourite" exact
-          >
           {
-            user ? <Favourite user={user}/> : <Login user={user}/>
+            user.token === undefined ? 
+              <Redirect to='/login' />
+            :
+            <Route
+              path="/favourite" exact
+              render={(props) => <Favourite {...props}/>}
+            />
           }
-          </Route>
         </Switch>
       </Router>
     </>
