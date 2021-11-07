@@ -49,8 +49,8 @@ app.post('/register',async (req,res)=>{
     });
 
     try{
-        const savedUser = await user.save();
-        res.send({user: user._id});
+        await user.save();
+        res.json({Status: "success"});
     }catch(err){
         res.status(400).json(`Error: ${err}`);
     }

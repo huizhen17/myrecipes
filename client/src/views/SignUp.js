@@ -62,7 +62,7 @@ function SignUp() {
 
                 await axiosInstance.post("/register", {signUpName, signUpEmail, signUpPass, signUpRePass} , config)
                 .then((res)=>{
-                    emailjs.sendForm('service_4esexkv','template_mewsy6b',e.target)
+                    emailjs.sendForm('service_4esexkv','template_mewsy6b',e.target,process.env.REACT_APP_EMAILJS_USER_ID)
                     .then((res)=>{
                         console.log(res)
                     }).catch((err)=>{
@@ -74,7 +74,7 @@ function SignUp() {
                 setError("");
 
             } catch (error) {
-                setError(error);
+                //setError(error.response);
                 console.log(error);
             }
         }
