@@ -22,16 +22,16 @@ function App() {
 
   const [user, setLoginUser] = useState({});
 
-  useEffect(() => {
-    getLocalUsers();
+  useEffect(async() => {
+    await getLocalUsers();
   },[]);
 
-  const getLocalUsers = () => {
+  const getLocalUsers = async() => {
 
-    if(localStorage.getItem('userinfo') === null){
+    if(await localStorage.getItem('userinfo') === null){
       setLoginUser({});
     }else{
-      let users = JSON.parse(localStorage.getItem('userinfo'));
+      let users = await JSON.parse(await localStorage.getItem('userinfo'));
 
       if(users.length === 0){
         setLoginUser({});
@@ -77,15 +77,10 @@ function App() {
               render={(props) => <Profile {...props}/>}
             />
           }
-          {
-            user.token === undefined ? 
-              <Redirect to='/login' />
-            :
-            <Route
-              path="/favourite" exact
-              render={(props) => <Favourite {...props}/>}
-            />
-          }
+          <Route
+            path="/favourite" exact
+            render={(props) => <Favourite {...props}/>}
+          />
         </Switch>
       </Router>
     </>

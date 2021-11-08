@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import {
   CardBody,
@@ -27,7 +27,7 @@ import { axiosInstance } from '../config';
 function Favourite() {
     const [user, setLoginUser] = useState({});
     const [favList, setFavList] = useState([]);
-    const [error, setError] = useState("");
+    const [error, setError] = useState(null);
     const [visible, setVisible] = useState(false);
     const [modal, setModal] = useState(false);
     const [delModal, setDelModal] = useState(false);
@@ -35,6 +35,8 @@ function Favourite() {
     const [userid, setUserID] = useState("");
     const [recipeID, setRecipeID] = useState("");
     const [recipeTitle, setRecipeTitle] = useState("");
+
+    const history = useHistory();
 
     window.setTimeout(() => { 
       setVisible(false);
@@ -53,24 +55,15 @@ function Favourite() {
       setRecipeID(recipeName);
       setDelModal(!delModal);
     };
-
-    const updateMenu = async() => {
-      await axiosInstance.put(`/favourite/${id}`,{userid, recipeID, recipeTitle})
-      .then(res => {
-        console.log(res.data)
-        
-        window.location.reload(false);
-      })
-      .catch(error => setError(error));
-    }
-
-    useEffect(() => {
-      getLocalUsers();
+    
+    useEffect(async() => {
+      await getLocalUsers();
     },[visible]);
   
     const getLocalUsers = async() => {
-      if(localStorage.getItem('userinfo') === null){
+      if(await localStorage.getItem('userinfo') === null){
         setLoginUser({});
+        history.push('/login');
       }else{
         let user = await JSON.parse(localStorage.getItem('userinfo'));
         var userid = user._id;
@@ -83,9 +76,26 @@ function Favourite() {
             setFavList([]);
           }
         })
-        .catch(error => setError(error));
+        .catch(error => console.log(error));
       }
     };
+
+    const updateMenu = async() => {
+      console.log(recipeTitle);
+      if(recipeTitle === ""){
+        setError("Recipe Title is missing!");
+      }else{
+        setError(null);
+        await axiosInstance.put(`/favourite/${id}`,{userid, recipeID, recipeTitle})
+        .then(res => {
+          setVisible(false);
+          setModal(false);
+          window.location.href="/favourite";
+        })
+        .catch(error => console.log(error));
+      }
+      
+    }
 
     const removeFavourite = async() => {
       const recTitle = recipeID;
@@ -167,6 +177,9 @@ function Favourite() {
                         <Label className="form-label small-title">New Recipe Name</Label>
                         <Input className="loginFormInput" required placeholder="Recipe Title" type="text" value={recipeTitle} onChange={(e)=>setRecipeTitle(e.target.value)} />
                     </FormGroup>
+                    <p className={`${error !== null ? "errorMessage display-block" : "display-none"}`} color="danger">
+                      <i className="fa fa-exclamation-circle error-icon"/>{error}
+                    </p>
                 </Form>
               </ModalBody>
               <ModalFooter className="modal-footer-fav">
