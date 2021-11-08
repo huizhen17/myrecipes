@@ -20,27 +20,6 @@ import Profile from './views/Profile';
 
 function App() {
 
-  const [user, setLoginUser] = useState({});
-
-  useEffect(async() => {
-    await getLocalUsers();
-  },[]);
-
-  const getLocalUsers = async() => {
-
-    if(await localStorage.getItem('userinfo') === null){
-      setLoginUser({});
-    }else{
-      let users = await JSON.parse(await localStorage.getItem('userinfo'));
-
-      if(users.length === 0){
-        setLoginUser({});
-      }else{
-        setLoginUser(users);
-      }
-    }
-  };
-
   return (
     <>
       <Router>
@@ -56,27 +35,16 @@ function App() {
           />
           <Route 
             path="/login" exact
-          >
-          {
-            user.token === undefined ? <Login /> : <Redirect to='/'/> 
-          }
-          </Route>
+            render={(props) => <Login {...props}/>}
+          />
           <Route 
             path="/signup" exact
-          >
-          {
-            user.token === undefined ? <SignUp /> : <Redirect to='/' />
-          }
-          </Route>
-          {
-            user.token === undefined ? 
-              <Redirect to='/login' />
-            :
-            <Route 
-              path="/profile" exact
-              render={(props) => <Profile {...props}/>}
-            />
-          }
+            render={(props) => <SignUp {...props}/>}
+          />
+          <Route 
+            path="/profile" exact
+            render={(props) => <Profile {...props}/>}
+          />
           <Route
             path="/favourite" exact
             render={(props) => <Favourite {...props}/>}

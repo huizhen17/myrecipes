@@ -1,5 +1,5 @@
 
-import React, {useState} from 'react'
+import React, {useState , useEffect} from 'react'
 import { Link, useHistory } from 'react-router-dom';
 import emailjs from 'emailjs-com';
 
@@ -77,9 +77,21 @@ function SignUp() {
                 //setError(error.response);
                 console.log(error);
             }
-        }
-        
+        }  
     } 
+
+    
+    useEffect(async() => {
+        await getLocalUsers();
+      },[]);
+    
+    const getLocalUsers = async() => {
+        let users = await JSON.parse(await localStorage.getItem('userinfo'));
+
+        if(users.length !== 0){
+            history.push('/');
+        }      
+    };
 
     return (
         <div>

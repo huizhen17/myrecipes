@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import HomeNavbar from '../components/HomeNavbar';
 
 import {
@@ -17,19 +17,21 @@ import {
 
 function Profile() {
     const [user, setLoginUser] = useState({});
+    const history = useHistory();
 
-    useEffect(() => {
-      getLocalUsers();
+    useEffect(async() => {
+      await getLocalUsers();
     },[]);
   
-    const getLocalUsers = () => {
-      if(localStorage.getItem('userinfo') === null){
-        localStorage.setItem('userinfo',JSON.stringify([]));
-        setLoginUser([]);
-      }else{
-        let user = JSON.parse(localStorage.getItem('userinfo'));
-        setLoginUser(user);
-      }
+    const getLocalUsers = async() => {
+        let users = await JSON.parse(await localStorage.getItem('userinfo'));
+        if(users.length === 0){
+            setLoginUser({});
+            history.push('/login');
+        }else{
+            let user = await JSON.parse(await localStorage.getItem('userinfo'));
+            setLoginUser(user);
+        }
     };
 
 

@@ -1,5 +1,5 @@
 
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { Link, useHistory } from 'react-router-dom';
 
 import {
@@ -52,7 +52,6 @@ function Login() {
                 localStorage.setItem("userinfo", JSON.stringify(res.data));
                 //console.log(res.data);
                 setError("");
-                window.location.reload(false);
                 history.push('/');    
             })
 
@@ -61,6 +60,18 @@ function Login() {
             console.log(error.response.data);
         }
     }
+
+    useEffect(async() => {
+        await getLocalUsers();
+      },[]);
+    
+    const getLocalUsers = async() => {
+        let users = await JSON.parse(await localStorage.getItem('userinfo'));
+
+        if(users.length !== 0){
+            history.push('/');
+        }      
+    };
 
     return (
         <div>

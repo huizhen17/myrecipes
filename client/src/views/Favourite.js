@@ -61,7 +61,9 @@ function Favourite() {
     },[visible]);
   
     const getLocalUsers = async() => {
-      if(await localStorage.getItem('userinfo') === null){
+      let users = await JSON.parse(await localStorage.getItem('userinfo'));
+
+      if(users.length === 0){
         setLoginUser({});
         history.push('/login');
       }else{
@@ -90,7 +92,8 @@ function Favourite() {
         .then(res => {
           setVisible(false);
           setModal(false);
-          window.location.href="/favourite";
+          window.location.reload(false);
+          history.push('/favourite');    
         })
         .catch(error => console.log(error));
       }
