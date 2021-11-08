@@ -28,6 +28,7 @@ function Favourite() {
     const [user, setLoginUser] = useState({});
     const [favList, setFavList] = useState([]);
     const [error, setError] = useState(null);
+    const [updateError, setUpdateError] = useState(null);
     const [visible, setVisible] = useState(false);
     const [modal, setModal] = useState(false);
     const [delModal, setDelModal] = useState(false);
@@ -57,6 +58,8 @@ function Favourite() {
     };
     
     useEffect(async() => {
+      setError(null);
+      setUpdateError(null);
       await getLocalUsers();
     },[visible]);
   
@@ -78,16 +81,16 @@ function Favourite() {
             setFavList([]);
           }
         })
-        .catch(error => console.log(error));
+        .catch(error => setError(error));
       }
     };
 
     const updateMenu = async() => {
       console.log(recipeTitle);
       if(recipeTitle === ""){
-        setError("Recipe Title is missing!");
+        setUpdateError("Recipe Title is missing!");
       }else{
-        setError(null);
+        setUpdateError(null);
         await axiosInstance.put(`/favourite/${id}`,{userid, recipeID, recipeTitle})
         .then(res => {
           setVisible(false);
@@ -95,7 +98,7 @@ function Favourite() {
           window.location.reload(false);
           history.push('/favourite');    
         })
-        .catch(error => console.log(error));
+        .catch(error => setError(error));
       }
       
     }
@@ -180,8 +183,8 @@ function Favourite() {
                         <Label className="form-label small-title">New Recipe Name</Label>
                         <Input className="loginFormInput" required placeholder="Recipe Title" type="text" value={recipeTitle} onChange={(e)=>setRecipeTitle(e.target.value)} />
                     </FormGroup>
-                    <p className={`${error !== null ? "errorMessage display-block" : "display-none"}`} color="danger">
-                      <i className="fa fa-exclamation-circle error-icon"/>{error}
+                    <p className={`${updateError !== null ? "errorMessage display-block" : "display-none"}`} color="danger">
+                      <i className="fa fa-exclamation-circle error-icon"/>{updateError}
                     </p>
                 </Form>
               </ModalBody>
